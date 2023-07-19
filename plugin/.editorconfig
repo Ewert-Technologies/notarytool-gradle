@@ -1,0 +1,5 @@
+root = true
+
+[*.{kt,kts,kt.spec,kts.spec}]
+indent_size = 2
+no-consecutive-blank-lines = false
