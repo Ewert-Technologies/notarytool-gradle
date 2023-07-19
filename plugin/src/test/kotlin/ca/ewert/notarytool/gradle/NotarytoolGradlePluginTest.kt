@@ -17,6 +17,6 @@ class NotarytoolGradlePluginTest {
         project.plugins.apply("ca.ewert.notarytool.gradle.greeting")
 
         // Verify the result
-        assertNotNull(project.tasks.findByName("greeting"))
+        assertNotNull(project.tasks.findByName("greetingTask"))
     }
 }

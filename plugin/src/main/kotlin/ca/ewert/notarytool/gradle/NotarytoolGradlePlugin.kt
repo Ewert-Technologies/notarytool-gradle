@@ -12,7 +12,8 @@ import org.gradle.api.Plugin
 class NotarytoolGradlePlugin: Plugin<Project> {
   override fun apply(project: Project) {
     // Register a task
-    project.tasks.register("greeting") { task ->
+    project.tasks.register("greetingTask") { task ->
+      task.group = "notarytool"
       task.doLast {
         println("Hello from plugin 'ca.ewert.notarytool.gradle.greeting'")
       }
