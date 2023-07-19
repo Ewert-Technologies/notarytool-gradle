@@ -23,7 +23,7 @@ repositories {
 gradlePlugin {
   // Define the plugin
   val greeting by plugins.creating {
-    id = "ca.ewert.notarytool.gradle.greeting"
+    id = "ca.ewert.notarytool.gradle"
     implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
   }
 }
