@@ -11,12 +11,13 @@ import kotlin.test.assertNotNull
  * A simple unit test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
  */
 class NotarytoolGradlePluginTest {
-    @Test fun `plugin registers task`() {
-        // Create a test project and apply the plugin
-        val project = ProjectBuilder.builder().build()
-        project.plugins.apply("ca.ewert.notarytool.gradle")
+  @Test
+  fun `plugin registers task`() {
+    // Create a test project and apply the plugin
+    val project = ProjectBuilder.builder().build()
+    project.plugins.apply("ca.ewert.notarytool.gradle")
 
-        // Verify the result
-        assertNotNull(project.tasks.findByName("greetingTask"))
-    }
+    // Verify the result
+    assertNotNull(project.tasks.findByName("greetingTask"))
+  }
 }

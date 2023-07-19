@@ -3,13 +3,13 @@
  */
 package ca.ewert.notarytool.gradle
 
-import org.gradle.api.Project
 import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 /**
  * A simple 'hello world' plugin.
  */
-class NotarytoolGradlePlugin: Plugin<Project> {
+class NotarytoolGradlePlugin : Plugin<Project> {
   override fun apply(project: Project) {
     // Register a task
     project.tasks.register("greetingTask") { task ->
