@@ -14,3 +14,4 @@ rootProject.name = "notarytool-gradle"
 pluginManagement {
   includeBuild("plugin")
 }
+
