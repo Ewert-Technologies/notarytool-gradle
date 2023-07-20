@@ -3,21 +3,31 @@
  */
 package ca.ewert.notarytool.gradle
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
+import org.gradle.api.Task
 import org.gradle.testfixtures.ProjectBuilder
 import kotlin.test.Test
-import kotlin.test.assertNotNull
 
 /**
  * A simple unit test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
  */
 class NotarytoolGradlePluginTest {
+
   @Test
-  fun `plugin registers task`() {
+  fun pluginRegistersTask() {
     // Create a test project and apply the plugin
     val project = ProjectBuilder.builder().build()
     project.plugins.apply("ca.ewert.notarytool.gradle")
+    println("Hello Test")
 
     // Verify the result
-    assertNotNull(project.tasks.findByName("greetingTask"))
+//    assertNotNull(project.tasks.findByName("greetingTask"))
+    val greetingTask: Task? = project.tasks.findByName("greetingTask")
+    assertThat(greetingTask).isNotNull()
+    assertThat(greetingTask?.name).isEqualTo("greetingTask")
+    assertThat(greetingTask?.group).isEqualTo("notarytool")
+    assertThat(greetingTask?.description).isNotNull()
   }
 }

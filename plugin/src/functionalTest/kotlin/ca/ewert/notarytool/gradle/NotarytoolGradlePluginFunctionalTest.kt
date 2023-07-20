@@ -21,7 +21,7 @@ class NotarytoolGradlePluginFunctionalTest {
   private val settingsFile by lazy { projectDir.resolve("settings.gradle") }
 
   @Test
-  fun `can run task`() {
+  fun canRunTask() {
     // Set up the test build
     settingsFile.writeText("")
     buildFile.writeText(
@@ -31,6 +31,8 @@ class NotarytoolGradlePluginFunctionalTest {
         }
       """.trimIndent(),
     )
+
+    println("Build File: ${buildFile.absolutePath}")
 
     // Run the build
     val runner = GradleRunner.create()

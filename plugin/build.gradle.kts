@@ -18,10 +18,31 @@ plugins {
   id("org.jmailen.kotlinter") version "3.15.0"
 }
 
+//
+// Repositories for Plugin Dependencies
+//
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
 }
+
+//
+// Plugin Dependencies
+//
+dependencies {
+
+  // Testing
+//  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
+  testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.26.1")
+}
+
+//
+// Configure Testing
+//
+//tasks.named<Test>("test") {
+//  useJUnitPlatform()
+//}
+
 
 gradlePlugin {
   // Define the plugin

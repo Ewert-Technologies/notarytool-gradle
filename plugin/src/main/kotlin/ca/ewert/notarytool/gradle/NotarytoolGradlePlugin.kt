@@ -3,20 +3,26 @@
  */
 package ca.ewert.notarytool.gradle
 
+import ca.ewert.notarytool.gradle.extensions.GreetingExtension
+import ca.ewert.notarytool.gradle.tasks.HelloTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * A simple 'hello world' plugin.
+ * A Gradle Plugin used to interact with the Apple's Notarytool Web API
  */
 class NotarytoolGradlePlugin : Plugin<Project> {
   override fun apply(project: Project) {
-    // Register a task
+    val extension = project.extensions.create("greeting", GreetingExtension::class.java)
+    extension.message.convention("N/A")
     project.tasks.register("greetingTask") { task ->
       task.group = "notarytool"
+      task.description = "Greet task, used only for hacking around"
       task.doLast {
-        println("Hello from plugin 'ca.ewert.notarytool.gradle.greeting'")
+        println("Hello from plugin 'ca.ewert.notarytool.gradle.greeting', message: ${extension.message.get()}")
       }
     }
+
+    project.tasks.register("helloTask", HelloTask::class.java)
   }
 }
