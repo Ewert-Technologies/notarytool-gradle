@@ -3,7 +3,7 @@ import ca.ewert.notarytool.gradle.tasks.HelloTask
 
 plugins {
   id("org.jetbrains.kotlin.jvm") version "1.9.0"
-  id("ca.ewert.notarytool.gradle")
+  id("ca.ewert.notarytoolgradle")
 }
 
 repositories {

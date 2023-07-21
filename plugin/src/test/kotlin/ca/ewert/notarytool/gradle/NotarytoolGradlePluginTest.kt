@@ -19,7 +19,7 @@ class NotarytoolGradlePluginTest {
   fun pluginRegistersTask() {
     // Create a test project and apply the plugin
     val project = ProjectBuilder.builder().build()
-    project.plugins.apply("ca.ewert.notarytool.gradle")
+    project.plugins.apply("ca.ewert.notarytoolgradle")
     println("Hello Test")
 
     // Verify the result

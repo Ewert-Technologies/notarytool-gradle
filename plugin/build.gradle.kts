@@ -7,6 +7,8 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
+@file:Suppress("UnstableApiUsage")
+
 //
 // Plugins
 //
@@ -43,14 +45,47 @@ dependencies {
 //  useJUnitPlatform()
 //}
 
+//
+// Set up plugin metadata
+//
+
+//group = "ca.ewert.notarytoolgradle"
 
 gradlePlugin {
+
+  website.set("https://www.ewert-technologies.ca")
+  vcsUrl.set("https://www.ewert-technologies.ca")
+
   // Define the plugin
-  val greeting by plugins.creating {
-    id = "ca.ewert.notarytool.gradle"
-    implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
+  plugins {
+    create("notarytool-gradle") {
+      id = project.group.toString()
+      displayName = "Notarytool Gradle"
+      description = project.description
+      tags.set(listOf("deployment", "notarytool", "apple"))
+      implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
+    }
   }
 }
+
+/**
+ * Displays general build info, such as versions, key directory locations, etc.
+ */
+tasks.register("buildInfo") {
+  group = "help"
+  description = "Displays general build info, such as versions, etc."
+
+  logger.quiet("Project: ${project.name} - ${project.description}")
+  logger.quiet("Project version: ${project.version}")
+  logger.quiet("Group:  ${project.group}")
+//  logger.quiet("Author: $author")
+//  logger.quiet("Company: $company")
+  logger.quiet("Gradle Version: ${gradle.gradleVersion}")
+//  logger.quiet("Java Toolchain: Version ${java.toolchain.languageVersion.get()} (${java.toolchain.vendor.get()})")
+  logger.quiet("build dir: ${project.buildDir}")
+}
+
+
 
 testing {
   suites {
@@ -79,8 +114,6 @@ testing {
     }
   }
 }
-
-
 
 gradlePlugin.testSourceSets.add(sourceSets["functionalTest"])
 

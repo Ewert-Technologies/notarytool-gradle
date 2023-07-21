@@ -27,7 +27,7 @@ class NotarytoolGradlePluginFunctionalTest {
     buildFile.writeText(
       """
         plugins {
-            id('ca.ewert.notarytool.gradle')
+            id('ca.ewert.notarytoolgradle')
         }
       """.trimIndent(),
     )
