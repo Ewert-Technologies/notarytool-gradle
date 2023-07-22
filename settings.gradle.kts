@@ -10,7 +10,5 @@
 
 rootProject.name = "notarytool-gradle-root"
 
-pluginManagement {
-  includeBuild("plugin")
-}
-
+include("plugin")
+project(file("./plugin")).name = "notarytool-gradle"
