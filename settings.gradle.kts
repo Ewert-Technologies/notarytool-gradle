@@ -12,3 +12,4 @@ rootProject.name = "notarytool-gradle-root"
 
 include("plugin")
 project(file("./plugin")).name = "notarytool-gradle"
+include("consumer")
