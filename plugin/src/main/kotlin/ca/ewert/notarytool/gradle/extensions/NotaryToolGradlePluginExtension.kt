@@ -11,7 +11,7 @@ import java.nio.file.Path
  * Created: 2023-07-21
  * @author Victor Ewert
  */
-interface NotarytoolGradle {
+interface NotaryToolGradlePluginExtension {
 
   /** Issuer ID from the API Keys page in App Store Connect  */
   val issuerId: Property<String>
