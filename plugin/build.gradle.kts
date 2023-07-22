@@ -48,9 +48,6 @@ dependencies {
 //
 // Set up plugin metadata
 //
-
-//group = "ca.ewert.notarytoolgradle"
-
 gradlePlugin {
 
   website.set("https://www.ewert-technologies.ca")
