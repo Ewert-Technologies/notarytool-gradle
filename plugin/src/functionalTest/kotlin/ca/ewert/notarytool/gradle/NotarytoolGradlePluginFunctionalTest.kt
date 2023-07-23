@@ -3,6 +3,8 @@
  */
 package ca.ewert.notarytool.gradle
 
+import assertk.assertThat
+import assertk.assertions.contains
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -17,7 +19,7 @@ class NotarytoolGradlePluginFunctionalTest {
   @field:TempDir
   lateinit var projectDir: File
 
-  private val buildFile by lazy { projectDir.resolve("build.gradle") }
+  private val buildFile by lazy { projectDir.resolve("build.gradle.kts") }
   private val settingsFile by lazy { projectDir.resolve("settings.gradle") }
 
   @Test
@@ -27,7 +29,7 @@ class NotarytoolGradlePluginFunctionalTest {
     buildFile.writeText(
       """
         plugins {
-            id('ca.ewert.notarytoolgradle')
+          id("ca.ewert.notarytoolgradle")
         }
       """.trimIndent(),
     )
@@ -44,5 +46,43 @@ class NotarytoolGradlePluginFunctionalTest {
 
     // Verify the result
     assertTrue(result.output.contains("Hello from plugin 'ca.ewert.notarytool.gradle.greeting'"))
+  }
+
+  @Test
+  fun helloTest() {
+    // Set up the test build
+    settingsFile.writeText("")
+    buildFile.writeText(
+      """
+        import ca.ewert.notarytool.gradle.extensions.GreetingExtension
+        
+        plugins {
+          id("ca.ewert.notarytoolgradle")
+        }
+        
+        configure<GreetingExtension> {
+          message.set("Hello Gradle Plugin")
+          name.set("Victor")
+        }
+
+        tasks.helloTask {
+          middleName = "george"
+          lastName.set("ewert")
+        }
+      """.trimIndent(),
+    )
+
+    println("Build File: ${buildFile.absolutePath}")
+
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("helloTask")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+
+    // Verify the result
+    assertThat(result.output).contains("Hello: Victor george ewert")
   }
 }
