@@ -34,6 +34,7 @@ repositories {
 dependencies {
 
   // Testing
+  testImplementation(gradleTestKit())
 //  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
   testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.26.1")
 }
@@ -100,6 +101,7 @@ testing {
       dependencies {
         // functionalTest test suite depends on the production code in tests
         implementation(project())
+        implementation("com.willowtreeapps.assertk:assertk:0.26.1")
       }
 
       targets {
