@@ -132,3 +132,6 @@ gradle-app.setting
 hs_err_pid*
 replay_pid*
 
+# Private tests and resources, not be added to git
+private
+
