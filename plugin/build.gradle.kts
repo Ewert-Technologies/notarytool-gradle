@@ -9,6 +9,7 @@
 
 @file:Suppress("UnstableApiUsage")
 
+
 //
 // Plugins
 //
@@ -38,13 +39,6 @@ dependencies {
 //  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
   testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.26.1")
 }
-
-//
-// Configure Testing
-//
-//tasks.named<Test>("test") {
-//  useJUnitPlatform()
-//}
 
 //
 // Set up plugin metadata
@@ -83,7 +77,12 @@ tasks.register("buildInfo") {
   logger.quiet("build dir: ${project.buildDir}")
 }
 
-
+//
+// Configure Testing
+//
+//tasks.named<Test>("test") {
+//  useJUnitPlatform()
+//}
 
 testing {
   suites {
