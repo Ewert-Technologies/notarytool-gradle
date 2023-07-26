@@ -29,6 +29,6 @@ abstract class HelloTask() : DefaultTask() {
   @TaskAction
   fun printHello() {
     val extension: GreetingExtension = project.extensions.getByType(GreetingExtension::class.java)
-    println("Hello: ${extension.name.get()} $middleName ${lastName.get()}")
+    logger.quiet("Hello: ${extension.name.get()} $middleName ${lastName.get()}")
   }
 }
