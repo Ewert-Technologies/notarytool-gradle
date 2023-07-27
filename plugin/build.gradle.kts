@@ -27,12 +27,14 @@ plugins {
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
+  mavenLocal()
 }
 
 //
 // Plugin Dependencies
 //
 dependencies {
+  implementation(group = "ca.ewert.notarytoolkotlin", name = "notarytool-kotlin", "0.0.1")
 
   // Testing
   testImplementation(gradleTestKit())
