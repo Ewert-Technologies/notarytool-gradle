@@ -38,7 +38,7 @@ dependencies {
 
   // Testing
   testImplementation(gradleTestKit())
-//  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
+  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
   testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.26.1")
 }
 
@@ -82,22 +82,22 @@ tasks.register("buildInfo") {
 //
 // Configure Testing
 //
-//tasks.named<Test>("test") {
-//  useJUnitPlatform()
-//}
+tasks.named<Test>("test") {
+  useJUnitPlatform()
+}
 
 testing {
   suites {
     // Configure the built-in test suite
     val test by getting(JvmTestSuite::class) {
       // Use Kotlin Test test framework
-      useKotlinTest("1.8.10")
+//      useJUnitPlatform()
     }
 
     // Create a new test suite
     val functionalTest by registering(JvmTestSuite::class) {
       // Use Kotlin Test test framework
-      useKotlinTest("1.8.10")
+//      useJUnitPlatform()
 
       dependencies {
         // functionalTest test suite depends on the production code in tests

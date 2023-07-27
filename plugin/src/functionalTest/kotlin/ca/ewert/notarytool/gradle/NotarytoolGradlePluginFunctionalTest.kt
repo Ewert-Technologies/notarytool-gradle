@@ -6,10 +6,12 @@ package ca.ewert.notarytool.gradle
 import assertk.assertThat
 import assertk.assertions.contains
 import org.gradle.testkit.runner.GradleRunner
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
-import kotlin.test.Test
-import kotlin.test.assertTrue
+
+//import kotlin.test.Test
+//import kotlin.test.assertTrue
 
 /**
  * A simple functional test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
@@ -45,7 +47,7 @@ class NotarytoolGradlePluginFunctionalTest {
     val result = runner.build()
 
     // Verify the result
-    assertTrue(result.output.contains("Hello from plugin 'ca.ewert.notarytool.gradle.greeting'"))
+    assertThat(result.output).contains("Hello from plugin 'ca.ewert.notarytool.gradle.greeting'")
   }
 
   @Test
