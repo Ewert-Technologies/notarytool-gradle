@@ -59,8 +59,6 @@ class SubmissionHistoryTaskTests {
     runner.withArguments("submissionHistory")
     runner.withProjectDir(projectDir)
     val result = runner.build()
-//    println("---Output-----------------------------------------")
-//    println(result.output)
-//    println("--------------------------------------------")
+    assertThat(result.output).contains("Submission History (last 100 submission):")
   }
 }
