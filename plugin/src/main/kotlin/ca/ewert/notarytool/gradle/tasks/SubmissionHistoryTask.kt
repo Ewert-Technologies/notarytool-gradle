@@ -1,13 +1,17 @@
 package ca.ewert.notarytool.gradle.tasks
 
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
+import ca.ewert.notarytoolkotlin.NotaryToolClient
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.unwrapError
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
-import java.nio.file.Path
-import kotlin.io.path.readText
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
- * TODO: Add Documentation
+ * A Task that Retrieves a list of previous notarization submissions.
  *
  * @author Victor Ewert
  */
@@ -17,16 +21,43 @@ abstract class SubmissionHistoryTask : DefaultTask() {
     this.description = "Retrieves a list of previous notarization submissions."
   }
 
+  /**
+   * Retrieves the list of previous submissions, and displays a summary of each
+   * submission via the logger.
+   */
   @TaskAction
   fun retrieveSubmissionHistory() {
     val pluginExtension: NotaryToolGradlePluginExtension =
       project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)
-    logger.quiet("Starting task: ${this.name}")
-    logger.quiet("Private Key id: ${pluginExtension.privateKeyId.get()}")
-    logger.quiet("Issuer id: ${pluginExtension.issuerId.get()}")
-    logger.quiet("Private Key File: ${pluginExtension.privateKeyFile.get()}")
-    val privateKeyFile: Path = (pluginExtension.privateKeyFile.get())
-    logger.quiet("file location: $privateKeyFile")
-    logger.quiet("file contents: \n${privateKeyFile.readText(charset = Charsets.UTF_8)}")
+    logger.lifecycle("Starting task: ${this.name}")
+
+    val client = NotaryToolClient(
+      issuerId = pluginExtension.issuerId.get(),
+      privateKeyId = pluginExtension.privateKeyId.get(),
+      privateKeyFile = pluginExtension.privateKeyFile.get(),
+      userAgent = "notarytool-gradle/${project.version}",
+    )
+
+    when (val result = client.getPreviousSubmissions()) {
+      is Ok -> {
+        logger.quiet("Submission History (last 100 submission):")
+        val submissionListResponse = result.value
+        submissionListResponse.submissionInfoList.forEach { submissionInfo ->
+          val createdDate = submissionInfo.createdDate
+          val createdDateString: String = if (createdDate != null) {
+            createdDate.atZone(ZoneId.systemDefault())
+              .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.LONG))
+          } else {
+            submissionInfo.createdDateText
+          }
+          logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$createdDateString'")
+        }
+      }
+
+      else -> {
+        val notaryToolError = result.unwrapError()
+        logger.warn(notaryToolError.toString())
+      }
+    }
   }
 }

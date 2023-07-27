@@ -42,8 +42,25 @@ class SubmissionHistoryTaskTests {
 //    println(result.output)
 //    println("--------------------------------------------")
 
-    assertThat(result.output).contains("Private Key id: Victor")
-    assertThat(result.output).contains("Issuer id: 12345")
-    assertThat(result.output).contains("Private Key File: D:\\users\\vewert\\DevProj\\notarytool-gradle\\plugin\\src\\functionalTest\\resources\\private\\AuthKey_Test.p8")
+    assertThat(result.output).contains("Starting task: submissionHistor")
+  }
+
+  @Test
+  fun test2() {
+    settingsFile.writeText("")
+    val buildFileContents: String =
+      this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
+
+    buildFile.writeText(buildFileContents)
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("submissionHistory")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+//    println("---Output-----------------------------------------")
+//    println(result.output)
+//    println("--------------------------------------------")
   }
 }
