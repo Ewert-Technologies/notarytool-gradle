@@ -11,7 +11,7 @@ import ca.ewert.notarytool.gradle.tasks.HelloTask
 import org.gradle.api.Task
 import org.gradle.api.provider.Property
 import org.gradle.testfixtures.ProjectBuilder
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 /**
  * A simple unit test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
