@@ -22,7 +22,7 @@ class SubmissionHistoryTaskTests {
 
   @Test
   fun test1() {
-    settingsFile.writeText("")
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
     val buildFileContents: String =
       this::class.java.getResource("/private/build1.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
     println()
@@ -42,12 +42,12 @@ class SubmissionHistoryTaskTests {
 //    println(result.output)
 //    println("--------------------------------------------")
 
-    assertThat(result.output).contains("Starting task: submissionHistor")
+    assertThat(result.output).contains("Starting task: submissionHistory")
   }
 
   @Test
   fun test2() {
-    settingsFile.writeText("")
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
     val buildFileContents: String =
       this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
 

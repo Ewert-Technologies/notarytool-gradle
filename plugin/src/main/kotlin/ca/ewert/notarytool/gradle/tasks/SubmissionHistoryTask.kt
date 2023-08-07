@@ -2,8 +2,8 @@ package ca.ewert.notarytool.gradle.tasks
 
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
 import ca.ewert.notarytoolkotlin.NotaryToolClient
+import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.unwrapError
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.time.ZoneId
@@ -35,8 +35,10 @@ abstract class SubmissionHistoryTask : DefaultTask() {
       issuerId = pluginExtension.issuerId.get(),
       privateKeyId = pluginExtension.privateKeyId.get(),
       privateKeyFile = pluginExtension.privateKeyFile.get(),
-      userAgent = "notarytool-gradle/${project.version}",
+      userAgent = "${project.name}/${project.version}",
     )
+
+    logger.info("User-Agent: ${client.userAgent}")
 
     when (val result = client.getPreviousSubmissions()) {
       is Ok -> {
@@ -54,10 +56,11 @@ abstract class SubmissionHistoryTask : DefaultTask() {
         }
       }
 
-      else -> {
-        val notaryToolError = result.unwrapError()
-        logger.warn(notaryToolError.toString())
+      is Err -> {
+        val notaryToolError = result.error
+        logger.warn(notaryToolError.longMsg)
       }
     }
+    logger.lifecycle("Completed task: ${this.name}")
   }
 }
