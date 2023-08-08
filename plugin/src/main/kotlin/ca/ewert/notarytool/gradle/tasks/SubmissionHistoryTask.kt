@@ -1,10 +1,7 @@
 package ca.ewert.notarytool.gradle.tasks
 
-import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
-import ca.ewert.notarytoolkotlin.NotaryToolClient
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
-import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -15,9 +12,8 @@ import java.time.format.FormatStyle
  *
  * @author Victor Ewert
  */
-abstract class SubmissionHistoryTask : DefaultTask() {
+abstract class SubmissionHistoryTask : NotaryToolTask() {
   init {
-    this.group = "notarytool"
     this.description = "Retrieves a list of previous notarization submissions."
   }
 
@@ -26,21 +22,11 @@ abstract class SubmissionHistoryTask : DefaultTask() {
    * submission via the logger.
    */
   @TaskAction
-  fun retrieveSubmissionHistory() {
-    val pluginExtension: NotaryToolGradlePluginExtension =
-      project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)
+  override fun taskAction() {
     logger.lifecycle("Starting task: ${this.name}")
+    logger.info("User-Agent: ${this.client.userAgent}")
 
-    val client = NotaryToolClient(
-      issuerId = pluginExtension.issuerId.get(),
-      privateKeyId = pluginExtension.privateKeyId.get(),
-      privateKeyFile = pluginExtension.privateKeyFile.get(),
-      userAgent = "${project.name}/${project.version}",
-    )
-
-    logger.info("User-Agent: ${client.userAgent}")
-
-    when (val result = client.getPreviousSubmissions()) {
+    when (val result = this.client.getPreviousSubmissions()) {
       is Ok -> {
         logger.quiet("Submission History (last 100 submission):")
         val submissionListResponse = result.value
