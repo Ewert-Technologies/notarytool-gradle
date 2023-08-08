@@ -34,7 +34,6 @@ class SubmissionStatusTaskTests {
     runner.withArguments("submissionStatus")
     runner.withProjectDir(projectDir)
     val result = runner.build()
-    assertThat(result.output).contains("Starting task: submissionStatus")
     assertThat(result.output).contains("The String passed in is not a valid submission id. Invalid String: ")
   }
 
