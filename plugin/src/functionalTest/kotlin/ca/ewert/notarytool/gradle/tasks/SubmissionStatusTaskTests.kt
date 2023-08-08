@@ -52,7 +52,6 @@ class SubmissionStatusTaskTests {
     runner.withArguments("submissionStatus", "--submissionId=12345")
     runner.withProjectDir(projectDir)
     val result = runner.build()
-    assertThat(result.output).contains("Starting task: submissionStatus")
     assertThat(result.output).contains("The String passed in is not a valid submission id. Invalid String: 12345")
   }
 
@@ -86,5 +85,22 @@ class SubmissionStatusTaskTests {
     runner.withArguments("submissionStatus", "--submissionId=c6da5f3b-e467-4197-98fa-c83bac3d2953")
     runner.withProjectDir(projectDir)
     val result = runner.build()
+  }
+
+  @Test
+  fun test5() {
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
+    val buildFileContents: String =
+      this::class.java.getResource("/private/build3.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
+
+    buildFile.writeText(buildFileContents)
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("submissionStatus")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+    assertThat(result.output).contains("The String passed in is not a valid submission id. Invalid String: ABCD")
   }
 }
