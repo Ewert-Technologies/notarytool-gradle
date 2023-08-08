@@ -19,14 +19,14 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
     option = "submissionId",
     description = "The identifier that you receive from the notary service when you post to Submit Software to start a new submission.",
   )
-  var submissionId: String = ""
+  var submissionIdString: String = ""
 
   init {
     this.description = "Retrieve the status of a notarization submission."
   }
 
   override fun taskAction() {
-    val submissionIdResult = SubmissionId.of(submissionId)
+    val submissionIdResult = SubmissionId.of(submissionIdString)
     submissionIdResult.onSuccess { submissionId: SubmissionId ->
       logger.info("Valid submissionId: ${submissionId.id}")
       retrieveStatus(submissionId)
