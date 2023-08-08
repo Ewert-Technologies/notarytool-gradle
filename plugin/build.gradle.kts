@@ -25,7 +25,6 @@ plugins {
 // Repositories for Plugin Dependencies
 //
 repositories {
-  // Use Maven Central for resolving dependencies.
   mavenCentral()
   mavenLocal()
 }
@@ -40,6 +39,22 @@ dependencies {
   testImplementation(gradleTestKit())
   testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
   testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.26.1")
+}
+
+//
+// Apply a specific Java toolchain to ease working on different environments.
+//
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(11))
+    vendor.set(JvmVendorSpec.ADOPTIUM)
+  }
+}
+
+kotlin {
+  jvmToolchain {
+    (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+  }
 }
 
 //
