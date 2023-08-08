@@ -4,6 +4,7 @@ import ca.ewert.notarytoolkotlin.response.Status
 import ca.ewert.notarytoolkotlin.response.SubmissionId
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.options.Option
 
@@ -15,18 +16,19 @@ import org.gradle.api.tasks.options.Option
 abstract class SubmissionStatusTask : NotaryToolTask() {
 
   @get:Input
-  @Option(
+  @get:Option(
     option = "submissionId",
     description = "The identifier that you receive from the notary service when you post to Submit Software to start a new submission.",
   )
-  var submissionId: String = ""
+  abstract val submissionId: Property<String>
 
   init {
     this.description = "Retrieve the status of a notarization submission."
+    submissionId.convention("")
   }
 
   override fun taskAction() {
-    val submissionIdResult = SubmissionId.of(submissionId)
+    val submissionIdResult = SubmissionId.of(submissionId.get())
     submissionIdResult.onSuccess { submissionIdWrapper: SubmissionId ->
       logger.info("Valid submissionId: ${submissionIdWrapper.id}")
       retrieveStatus(submissionIdWrapper)
