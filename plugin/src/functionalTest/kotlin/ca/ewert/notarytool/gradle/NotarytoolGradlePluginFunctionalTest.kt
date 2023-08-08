@@ -10,9 +10,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
-//import kotlin.test.Test
-//import kotlin.test.assertTrue
-
 /**
  * A simple functional test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
  */

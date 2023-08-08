@@ -20,7 +20,6 @@ class SubmissionStatusTaskTests {
   private val buildFile by lazy { projectDir.resolve("build.gradle.kts") }
   private val settingsFile by lazy { projectDir.resolve("settings.gradle") }
 
-
   @Test
   fun test1() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
