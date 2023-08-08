@@ -7,6 +7,7 @@ import ca.ewert.notarytool.gradle.extensions.GreetingExtension
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
 import ca.ewert.notarytool.gradle.tasks.HelloTask
 import ca.ewert.notarytool.gradle.tasks.SubmissionHistoryTask
+import ca.ewert.notarytool.gradle.tasks.SubmissionStatusTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -33,5 +34,6 @@ class NotarytoolGradlePlugin : Plugin<Project> {
 
     project.tasks.register("helloTask", HelloTask::class.java)
     project.tasks.register("submissionHistory", SubmissionHistoryTask::class.java)
+    project.tasks.register("submissionStatus", SubmissionStatusTask::class.java)
   }
 }
