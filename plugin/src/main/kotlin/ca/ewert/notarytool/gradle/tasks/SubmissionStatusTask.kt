@@ -19,17 +19,17 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
     option = "submissionId",
     description = "The identifier that you receive from the notary service when you post to Submit Software to start a new submission.",
   )
-  var submissionIdString: String = ""
+  var submissionId: String = ""
 
   init {
     this.description = "Retrieve the status of a notarization submission."
   }
 
   override fun taskAction() {
-    val submissionIdResult = SubmissionId.of(submissionIdString)
-    submissionIdResult.onSuccess { submissionId: SubmissionId ->
-      logger.info("Valid submissionId: ${submissionId.id}")
-      retrieveStatus(submissionId)
+    val submissionIdResult = SubmissionId.of(submissionId)
+    submissionIdResult.onSuccess { submissionIdWrapper: SubmissionId ->
+      logger.info("Valid submissionId: ${submissionIdWrapper.id}")
+      retrieveStatus(submissionIdWrapper)
     }
 
     submissionIdResult.onFailure { malformedSubmissionIdError ->
@@ -40,13 +40,13 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   /**
    * Retrieves and logs the submission status.
    */
-  private fun retrieveStatus(submissionId: SubmissionId) {
-    val statusResult = this.client.getSubmissionStatus(submissionId)
+  private fun retrieveStatus(submissionIdWrapper: SubmissionId) {
+    val statusResult = this.client.getSubmissionStatus(submissionIdWrapper)
 
     statusResult.onSuccess { submissionStatusResponse ->
-      logger.quiet("Status for submission id ${submissionId.id}: ${submissionStatusResponse.submissionInfo.status}")
+      logger.quiet("Status for submission id ${submissionIdWrapper.id}: ${submissionStatusResponse.submissionInfo.status}")
       when (submissionStatusResponse.submissionInfo.status) {
-        Status.ACCEPTED, Status.REJECTED, Status.INVALID -> retrieveSubmissionLogUrl(submissionId)
+        Status.ACCEPTED, Status.REJECTED, Status.INVALID -> retrieveSubmissionLogUrl(submissionIdWrapper)
         else -> logger.info("No log file")
       }
     }
@@ -59,8 +59,8 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   /**
    * Retries and logs the submission log (if available).
    */
-  private fun retrieveSubmissionLogUrl(submissionId: SubmissionId) {
-    val logResult = this.client.getSubmissionLog(submissionId)
+  private fun retrieveSubmissionLogUrl(submissionIdWrapper: SubmissionId) {
+    val logResult = this.client.getSubmissionLog(submissionIdWrapper)
     logResult.onSuccess { submissionLogUrlResponse ->
       logger.quiet("Submission Log: ${submissionLogUrlResponse.developerLogUrlString}")
     }
