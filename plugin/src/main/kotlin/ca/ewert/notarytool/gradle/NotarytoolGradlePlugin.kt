@@ -11,6 +11,18 @@ import ca.ewert.notarytool.gradle.tasks.SubmissionStatusTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+/** Constant for the group name for the plugin's tasks */
+internal const val TASK_GROUP_NAME = "notarytool"
+
+/** Constant for the name of the SubmissionHistory task. */
+private const val SUBMISSION_HISTORY_TASK_NAME = "submissionHistory"
+
+/** Constant for the name of the SubmissionStatus task. */
+private const val SUBMISSION_STATUS_TASK_NAME = "submissionStatus"
+
+/** Constant for the name of the SubmitSoftware task. */
+private const val SUBMIT_SOFTWARE_TASK_NAME = "submitSoftware"
+
 /**
  * A Gradle Plugin used to interact with the Apple's Notarytool Web API
  */
@@ -33,7 +45,8 @@ class NotarytoolGradlePlugin : Plugin<Project> {
     }
 
     project.tasks.register("helloTask", HelloTask::class.java)
-    project.tasks.register("submissionHistory", SubmissionHistoryTask::class.java)
-    project.tasks.register("submissionStatus", SubmissionStatusTask::class.java)
+    project.tasks.register(SUBMISSION_HISTORY_TASK_NAME, SubmissionHistoryTask::class.java)
+    project.tasks.register(SUBMISSION_STATUS_TASK_NAME, SubmissionStatusTask::class.java)
+    project.tasks.register(SUBMIT_SOFTWARE_TASK_NAME, SubmissionStatusTask::class.java)
   }
 }

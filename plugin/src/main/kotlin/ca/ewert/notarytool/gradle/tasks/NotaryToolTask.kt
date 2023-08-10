@@ -1,5 +1,6 @@
 package ca.ewert.notarytool.gradle.tasks
 
+import ca.ewert.notarytool.gradle.TASK_GROUP_NAME
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
 import ca.ewert.notarytoolkotlin.NotaryToolClient
 import org.gradle.api.DefaultTask
@@ -19,7 +20,7 @@ abstract class NotaryToolTask : DefaultTask() {
 
   init {
     logger.info("Inside init parent")
-    this.group = "notarytool"
+    this.group = TASK_GROUP_NAME
     val pluginExtension: NotaryToolGradlePluginExtension =
       project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)
     client = NotaryToolClient(
