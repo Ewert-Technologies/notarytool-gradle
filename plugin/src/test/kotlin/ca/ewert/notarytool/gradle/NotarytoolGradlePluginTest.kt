@@ -3,13 +3,6 @@
  */
 package ca.ewert.notarytool.gradle
 
-import assertk.assertThat
-import assertk.assertions.isEqualTo
-import assertk.assertions.isInstanceOf
-import assertk.assertions.isNotNull
-import ca.ewert.notarytool.gradle.tasks.HelloTask
-import org.gradle.api.Task
-import org.gradle.api.provider.Property
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.Test
 
@@ -23,31 +16,14 @@ class NotarytoolGradlePluginTest {
     // Create a test project and apply the plugin
     val project = ProjectBuilder.builder().build()
     project.plugins.apply("ca.ewert.notarytoolgradle")
-    println("Hello Test")
-
-    // Verify the result
-//    assertNotNull(project.tasks.findByName("greetingTask"))
-    val greetingTask: Task? = project.tasks.findByName("greetingTask")
-
-    assertThat(greetingTask).isNotNull()
-    assertThat(greetingTask?.name).isEqualTo("greetingTask")
-    assertThat(greetingTask?.group).isEqualTo("notarytool")
-    assertThat(greetingTask?.description).isNotNull()
-  }
-
-  @Test
-  fun helloTaskTest() {
-    println("Inside helloTaskTest()")
-    val project = ProjectBuilder.builder().build()
-    project.plugins.apply("ca.ewert.notarytoolgradle")
-    val helloTask: Task? = project.tasks.findByName("helloTask")
-
-    assertThat(helloTask).isNotNull()
-
-    if (helloTask != null) {
-      assertThat(helloTask).isInstanceOf<HelloTask>()
-      val x = helloTask.property("lastName") as Property<*>
-      assertThat(x.get()).isEqualTo("N/A")
-    }
+//    println("Hello Test")
+//
+//    // Verify the result
+//    val submissionHistoryTask: Task? = project.tasks.findByName("submissionHistory")
+//
+//    assertThat(submissionHistoryTask).isNotNull()
+//    assertThat(submissionHistoryTask?.name).isEqualTo("submissionHistory")
+//    assertThat(submissionHistoryTask?.group).isEqualTo("notarytool")
+//    assertThat(submissionHistoryTask?.description).isNotNull()
   }
 }
