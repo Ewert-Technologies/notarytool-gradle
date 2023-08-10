@@ -4,9 +4,9 @@
 package ca.ewert.notarytool.gradle
 
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
-import ca.ewert.notarytool.gradle.tasks.HelloTask
 import ca.ewert.notarytool.gradle.tasks.SubmissionHistoryTask
 import ca.ewert.notarytool.gradle.tasks.SubmissionStatusTask
+import ca.ewert.notarytool.gradle.tasks.SubmitSoftwareTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -33,9 +33,8 @@ class NotarytoolGradlePlugin : Plugin<Project> {
     notarytoolGradlePluginExtension.issuerId.convention("")
     notarytoolGradlePluginExtension.privateKeyId.convention("")
 
-    project.tasks.register("helloTask", HelloTask::class.java)
     project.tasks.register(SUBMISSION_HISTORY_TASK_NAME, SubmissionHistoryTask::class.java)
     project.tasks.register(SUBMISSION_STATUS_TASK_NAME, SubmissionStatusTask::class.java)
-    project.tasks.register(SUBMIT_SOFTWARE_TASK_NAME, SubmissionStatusTask::class.java)
+    project.tasks.register(SUBMIT_SOFTWARE_TASK_NAME, SubmitSoftwareTask::class.java)
   }
 }
