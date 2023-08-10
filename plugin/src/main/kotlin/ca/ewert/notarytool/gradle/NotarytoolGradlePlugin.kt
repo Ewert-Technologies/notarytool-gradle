@@ -3,7 +3,6 @@
  */
 package ca.ewert.notarytool.gradle
 
-import ca.ewert.notarytool.gradle.extensions.GreetingExtension
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
 import ca.ewert.notarytool.gradle.tasks.HelloTask
 import ca.ewert.notarytool.gradle.tasks.SubmissionHistoryTask
@@ -33,16 +32,6 @@ class NotarytoolGradlePlugin : Plugin<Project> {
 
     notarytoolGradlePluginExtension.issuerId.convention("")
     notarytoolGradlePluginExtension.privateKeyId.convention("")
-
-    val greetingExtension = project.extensions.create("greeting", GreetingExtension::class.java)
-    greetingExtension.message.convention("N/A")
-    project.tasks.register("greetingTask") { task ->
-      task.group = "notarytool"
-      task.description = "Greet task, used only for hacking around"
-      task.doLast {
-        println("Hello from plugin 'ca.ewert.notarytool.gradle.greeting', message: ${greetingExtension.message.get()}")
-      }
-    }
 
     project.tasks.register("helloTask", HelloTask::class.java)
     project.tasks.register(SUBMISSION_HISTORY_TASK_NAME, SubmissionHistoryTask::class.java)
