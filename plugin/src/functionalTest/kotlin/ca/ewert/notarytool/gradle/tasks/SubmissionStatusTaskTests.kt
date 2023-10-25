@@ -68,6 +68,7 @@ class SubmissionStatusTaskTests {
     runner.withArguments("submissionStatus", "--submissionId=2efe2717-52ef-43a5-96dc-0797e4ca1041")
     runner.withProjectDir(projectDir)
     val result = runner.build()
+    assertThat(result.output).contains("There is no resource of type 'submissions' with id '2efe2717-52ef-43a5-96dc-0797e4ca1041'")
   }
 
   @Test
@@ -84,6 +85,7 @@ class SubmissionStatusTaskTests {
     runner.withArguments("submissionStatus", "--submissionId=c6da5f3b-e467-4197-98fa-c83bac3d2953")
     runner.withProjectDir(projectDir)
     val result = runner.build()
+    assertThat(result.output).contains("Status for submission id c6da5f3b-e467-4197-98fa-c83bac3d2953: Accepted")
   }
 
   @Test
