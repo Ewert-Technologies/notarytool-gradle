@@ -51,6 +51,10 @@ class SubmissionHistoryTaskTests {
     val buildFileContents: String =
       this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
 
+    println()
+    println("---Build File-----------------------------------------")
+    println(buildFileContents)
+    println("--------------------------------------------")
     buildFile.writeText(buildFileContents)
     // Run the build
     val runner = GradleRunner.create()
@@ -59,6 +63,9 @@ class SubmissionHistoryTaskTests {
     runner.withArguments("submissionHistory")
     runner.withProjectDir(projectDir)
     val result = runner.build()
+    println("---Output-----------------------------------------")
+    println(result.output)
+    println("--------------------------------------------")
     assertThat(result.output).contains("Submission History (last 100 submission):")
   }
 }

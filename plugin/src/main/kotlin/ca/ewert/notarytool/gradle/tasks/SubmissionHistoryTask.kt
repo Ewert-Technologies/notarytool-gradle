@@ -24,7 +24,7 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
   @TaskAction
   override fun taskAction() {
     logger.lifecycle("Starting task: ${this.name}")
-    logger.info("User-Agent: ${this.client.userAgent}")
+    logger.lifecycle("User-Agent: ${this.client.userAgent}")
 
     when (val result = this.client.getPreviousSubmissions()) {
       is Ok -> {
