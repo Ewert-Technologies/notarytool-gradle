@@ -19,6 +19,7 @@ abstract class HelloTask() : DefaultTask() {
   var middleName: String = "n/a"
 
   @get:Input
+  @get:Option(option = "lastName", description = "Your middle name")
   abstract val lastName: Property<String>
 
   init {
