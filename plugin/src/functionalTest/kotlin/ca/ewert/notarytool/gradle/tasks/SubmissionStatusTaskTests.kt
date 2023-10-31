@@ -9,7 +9,7 @@ import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
 /**
- * TODO: Add Documentation
+ * Tests for SubmissionStatusTask
  *
  * @author Victor Ewert
  */
