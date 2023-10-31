@@ -3,10 +3,9 @@ package ca.ewert.notarytool.gradle.tasks
 import ca.ewert.notarytoolkotlin.NotaryToolError
 import ca.ewert.notarytoolkotlin.response.Status
 import ca.ewert.notarytoolkotlin.response.SubmissionId
+import ca.ewert.notarytoolkotlin.response.SubmissionLogUrlResponse
 import ca.ewert.notarytoolkotlin.response.SubmissionStatusResponse
 import com.github.michaelbull.result.mapEither
-import com.github.michaelbull.result.onFailure
-import com.github.michaelbull.result.onSuccess
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.options.Option
@@ -59,13 +58,10 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
    * Retrieves and logs the submission log (if available).
    */
   private fun retrieveSubmissionLogUrl(submissionIdWrapper: SubmissionId) {
-    val logResult = this.client.getSubmissionLog(submissionIdWrapper)
-    logResult.onSuccess { submissionLogUrlResponse ->
+    this.client.getSubmissionLog(submissionIdWrapper).mapEither({ submissionLogUrlResponse: SubmissionLogUrlResponse ->
       logger.quiet("Submission Log: ${submissionLogUrlResponse.developerLogUrlString}")
-    }
-
-    logResult.onFailure { notaryToolError ->
+    }, { notaryToolError: NotaryToolError ->
       logger.info("Error getting log: ${notaryToolError.longMsg}")
-    }
+    })
   }
 }
