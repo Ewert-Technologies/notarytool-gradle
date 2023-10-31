@@ -2,6 +2,7 @@ package ca.ewert.notarytool.gradle.tasks
 
 import assertk.assertThat
 import assertk.assertions.contains
+import ca.ewert.notarytool.gradle.*
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -23,8 +24,7 @@ class SubmissionHistoryTaskTests {
   @Test
   fun test1() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
-    val buildFileContents: String =
-      this::class.java.getResource("/private/build1.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
+    val buildFileContents: String = readBuildFileContents("/private/build1.gradle.ktstest")
     println()
     println("---Build File-----------------------------------------")
     println(buildFileContents)
@@ -48,9 +48,7 @@ class SubmissionHistoryTaskTests {
   @Test
   fun test2() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
-    val buildFileContents: String =
-      this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
-
+    val buildFileContents: String = readBuildFileContents("/private/build2.gradle.ktstest")
     println()
     println("---Build File-----------------------------------------")
     println(buildFileContents)

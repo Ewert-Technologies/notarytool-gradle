@@ -2,6 +2,7 @@ package ca.ewert.notarytool.gradle.tasks
 
 import assertk.assertThat
 import assertk.assertions.contains
+import ca.ewert.notarytool.gradle.readBuildFileContents
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -23,9 +24,7 @@ class SubmissionStatusTaskTests {
   @Test
   fun test1() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
-    val buildFileContents: String =
-      this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
-
+    val buildFileContents: String = readBuildFileContents("/private/build2.gradle.ktstest")
     buildFile.writeText(buildFileContents)
     // Run the build
     val runner = GradleRunner.create()
@@ -40,9 +39,7 @@ class SubmissionStatusTaskTests {
   @Test
   fun test2() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
-    val buildFileContents: String =
-      this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
-
+    val buildFileContents: String = readBuildFileContents("/private/build2.gradle.ktstest")
     buildFile.writeText(buildFileContents)
     // Run the build
     val runner = GradleRunner.create()
@@ -74,9 +71,7 @@ class SubmissionStatusTaskTests {
   @Test
   fun test4() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
-    val buildFileContents: String =
-      this::class.java.getResource("/private/build2.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
-
+    val buildFileContents: String = readBuildFileContents("/private/build2.gradle.ktstest")
     buildFile.writeText(buildFileContents)
     // Run the build
     val runner = GradleRunner.create()
@@ -91,9 +86,7 @@ class SubmissionStatusTaskTests {
   @Test
   fun test5() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
-    val buildFileContents: String =
-      this::class.java.getResource("/private/build3.gradle.ktstest")?.readText(Charsets.UTF_8) ?: ""
-
+    val buildFileContents: String = readBuildFileContents("/private/build3.gradle.ktstest")
     buildFile.writeText(buildFileContents)
     // Run the build
     val runner = GradleRunner.create()
