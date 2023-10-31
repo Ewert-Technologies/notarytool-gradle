@@ -11,7 +11,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.options.Option
 
 /**
- * Retrieve the status of a notarization submission.
+ * A Task that retrieves the status of a notarization submission.
  *
  * @author Victor Ewert
  */
@@ -20,15 +20,18 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   @get:Input
   @get:Option(
     option = "submissionId",
-    description = "The identifier that you receive from the notary service when you post to Submit Software to start a new submission.",
+    description = "The identifier that you received from the notary service when you post to Submit Software to start a new submission.",
   )
   abstract val submissionId: Property<String>
 
   init {
-    this.description = "Retrieve the status of a notarization submission."
-    submissionId.convention("")
+    this.description = "Retrieves the status of a notarization submission."
+    this.submissionId.convention("")
   }
 
+  /**
+   * Uses the submissionId argument to retrieve the submission status.
+   */
   override fun taskAction() {
     SubmissionId.of(submissionId.get()).mapEither({ submissionIdWrapper: SubmissionId ->
       logger.info("Valid submissionId: ${submissionIdWrapper.id}")
