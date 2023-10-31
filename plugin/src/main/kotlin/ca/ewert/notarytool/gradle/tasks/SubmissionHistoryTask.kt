@@ -1,8 +1,11 @@
 package ca.ewert.notarytool.gradle.tasks
 
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
+import ca.ewert.notarytoolkotlin.NotaryToolError
+import ca.ewert.notarytoolkotlin.response.SubmissionInfo
+import ca.ewert.notarytoolkotlin.response.SubmissionListResponse
+import com.github.michaelbull.result.mapEither
 import org.gradle.api.tasks.TaskAction
+import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -26,27 +29,20 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
     logger.lifecycle("Starting task: ${this.name}")
     logger.lifecycle("User-Agent: ${this.client.userAgent}")
 
-    when (val result = this.client.getPreviousSubmissions()) {
-      is Ok -> {
-        logger.quiet("Submission History (last 100 submission):")
-        val submissionListResponse = result.value
-        submissionListResponse.submissionInfoList.forEach { submissionInfo ->
-          val createdDate = submissionInfo.createdDate
-          val createdDateString: String = if (createdDate != null) {
-            createdDate.atZone(ZoneId.systemDefault())
-              .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.LONG))
-          } else {
-            submissionInfo.createdDateText
-          }
-          logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$createdDateString'")
+    this.client.getPreviousSubmissions().mapEither({ submissionListResponse: SubmissionListResponse ->
+      logger.quiet("Submission History (last 100 submission):")
+      submissionListResponse.submissionInfoList.forEach { submissionInfo: SubmissionInfo ->
+        val createdDate: Instant? = submissionInfo.createdDate
+        val createdDateString: String = if (createdDate != null) {
+          createdDate.atZone(ZoneId.systemDefault())
+            .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.LONG))
+        } else {
+          submissionInfo.createdDateText
         }
+        logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$createdDateString'")
       }
-
-      is Err -> {
-        val notaryToolError = result.error
-        logger.warn(notaryToolError.longMsg)
-      }
-    }
-    logger.lifecycle("Completed task: ${this.name}")
+    }, { notaryToolError: NotaryToolError ->
+      logger.warn(notaryToolError.longMsg)
+    })
   }
 }
