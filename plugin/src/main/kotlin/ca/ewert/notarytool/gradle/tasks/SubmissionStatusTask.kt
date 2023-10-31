@@ -1,7 +1,10 @@
 package ca.ewert.notarytool.gradle.tasks
 
+import ca.ewert.notarytoolkotlin.NotaryToolError
 import ca.ewert.notarytoolkotlin.response.Status
 import ca.ewert.notarytoolkotlin.response.SubmissionId
+import ca.ewert.notarytoolkotlin.response.SubmissionStatusResponse
+import com.github.michaelbull.result.mapEither
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import org.gradle.api.provider.Property
@@ -28,38 +31,32 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   }
 
   override fun taskAction() {
-    val submissionIdResult = SubmissionId.of(submissionId.get())
-    submissionIdResult.onSuccess { submissionIdWrapper: SubmissionId ->
+    SubmissionId.of(submissionId.get()).mapEither({ submissionIdWrapper: SubmissionId ->
       logger.info("Valid submissionId: ${submissionIdWrapper.id}")
       retrieveStatus(submissionIdWrapper)
-    }
-
-    submissionIdResult.onFailure { malformedSubmissionIdError ->
+    }, { malformedSubmissionIdError ->
       logger.warn(malformedSubmissionIdError.longMsg)
-    }
+    })
   }
 
   /**
    * Retrieves and logs the submission status.
    */
   private fun retrieveStatus(submissionIdWrapper: SubmissionId) {
-    val statusResult = this.client.getSubmissionStatus(submissionIdWrapper)
-
-    statusResult.onSuccess { submissionStatusResponse ->
-      logger.quiet("Status for submission id ${submissionIdWrapper.id}: ${submissionStatusResponse.submissionInfo.status}")
-      when (submissionStatusResponse.submissionInfo.status) {
-        Status.ACCEPTED, Status.REJECTED, Status.INVALID -> retrieveSubmissionLogUrl(submissionIdWrapper)
-        else -> logger.info("No log file")
-      }
-    }
-
-    statusResult.onFailure { notaryToolError ->
-      logger.warn(notaryToolError.longMsg)
-    }
+    this.client.getSubmissionStatus(submissionIdWrapper)
+      .mapEither({ submissionStatusResponse: SubmissionStatusResponse ->
+        logger.quiet("Status for submission id ${submissionIdWrapper.id}: ${submissionStatusResponse.submissionInfo.status}")
+        when (submissionStatusResponse.submissionInfo.status) {
+          Status.ACCEPTED, Status.REJECTED, Status.INVALID -> retrieveSubmissionLogUrl(submissionIdWrapper)
+          else -> logger.info("No log file")
+        }
+      }, { notaryToolError: NotaryToolError ->
+        logger.warn(notaryToolError.longMsg)
+      })
   }
 
   /**
-   * Retries and logs the submission log (if available).
+   * Retrieves and logs the submission log (if available).
    */
   private fun retrieveSubmissionLogUrl(submissionIdWrapper: SubmissionId) {
     val logResult = this.client.getSubmissionLog(submissionIdWrapper)
