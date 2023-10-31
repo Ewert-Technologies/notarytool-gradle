@@ -3,7 +3,7 @@ package ca.ewert.notarytool.gradle.tasks
 import ca.ewert.notarytoolkotlin.NotaryToolError
 import ca.ewert.notarytoolkotlin.response.SubmissionInfo
 import ca.ewert.notarytoolkotlin.response.SubmissionListResponse
-import com.github.michaelbull.result.mapEither
+import com.github.michaelbull.result.fold
 import org.gradle.api.tasks.TaskAction
 import java.time.Instant
 import java.time.ZoneId
@@ -29,7 +29,7 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
     logger.lifecycle("Starting task: ${this.name}")
     logger.lifecycle("User-Agent: ${this.client.userAgent}")
 
-    this.client.getPreviousSubmissions().mapEither({ submissionListResponse: SubmissionListResponse ->
+    this.client.getPreviousSubmissions().fold({ submissionListResponse: SubmissionListResponse ->
       logger.quiet("Submission History (last 100 submission):")
       submissionListResponse.submissionInfoList.forEach { submissionInfo: SubmissionInfo ->
         val createdDate: Instant? = submissionInfo.createdDate

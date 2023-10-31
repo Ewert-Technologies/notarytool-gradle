@@ -5,6 +5,7 @@ import ca.ewert.notarytoolkotlin.response.Status
 import ca.ewert.notarytoolkotlin.response.SubmissionId
 import ca.ewert.notarytoolkotlin.response.SubmissionLogUrlResponse
 import ca.ewert.notarytoolkotlin.response.SubmissionStatusResponse
+import com.github.michaelbull.result.fold
 import com.github.michaelbull.result.mapEither
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -33,10 +34,10 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
    * Uses the submissionId argument to retrieve the submission status.
    */
   override fun taskAction() {
-    SubmissionId.of(submissionId.get()).mapEither({ submissionIdWrapper: SubmissionId ->
+    SubmissionId.of(submissionId.get()).fold({ submissionIdWrapper: SubmissionId ->
       logger.info("Valid submissionId: ${submissionIdWrapper.id}")
       retrieveStatus(submissionIdWrapper)
-    }, { malformedSubmissionIdError ->
+    }, { malformedSubmissionIdError: NotaryToolError.UserInputError.MalformedSubmissionIdError ->
       logger.warn(malformedSubmissionIdError.longMsg)
     })
   }
