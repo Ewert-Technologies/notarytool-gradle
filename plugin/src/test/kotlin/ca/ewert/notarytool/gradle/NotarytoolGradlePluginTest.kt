@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
  * A simple unit test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
  */
 class NotarytoolGradlePluginTest {
-
   @Test
   fun pluginRegistersTask() {
     // Create a test project and apply the plugin

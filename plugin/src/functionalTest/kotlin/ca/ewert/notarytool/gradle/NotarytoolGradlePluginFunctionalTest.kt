@@ -10,7 +10,6 @@ import java.io.File
  * A simple functional test for the 'ca.ewert.notarytool.gradle.greeting' plugin.
  */
 class NotarytoolGradlePluginFunctionalTest {
-
   @field:TempDir
   lateinit var projectDir: File
 

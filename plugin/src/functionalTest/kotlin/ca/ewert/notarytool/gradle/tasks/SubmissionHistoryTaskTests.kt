@@ -14,7 +14,6 @@ import java.io.File
  * @author Victor Ewert
  */
 class SubmissionHistoryTaskTests {
-
   @field:TempDir
   lateinit var projectDir: File
 

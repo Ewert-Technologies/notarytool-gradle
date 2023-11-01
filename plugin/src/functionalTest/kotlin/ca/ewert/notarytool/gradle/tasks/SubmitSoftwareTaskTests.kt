@@ -45,7 +45,7 @@ class SubmitSoftwareTaskTests {
     val runner = GradleRunner.create()
     runner.forwardOutput()
     runner.withPluginClasspath()
-    runner.withArguments("submitSoftware",  "--fileLocation=abc")
+    runner.withArguments("submitSoftware", "--fileLocation=abc")
     runner.withProjectDir(projectDir)
     val result = runner.build()
     assertThat(result.output).contains("abc does not exist.")
@@ -63,7 +63,10 @@ class SubmitSoftwareTaskTests {
     val runner = GradleRunner.create()
     runner.forwardOutput()
     runner.withPluginClasspath()
-    runner.withArguments("submitSoftware",  "--fileLocation=/Users/vewert/DevProj/notarytool-gradle/plugin/src/functionalTest/resources/private/pwm_invalid_aarch64.dmg")
+    runner.withArguments(
+      "submitSoftware",
+      "--fileLocation=/Users/vewert/DevProj/notarytool-gradle/plugin/src/functionalTest/resources/private/pwm_invalid_aarch64.dmg",
+    )
     runner.withProjectDir(projectDir)
     val result = runner.build()
     assertThat(result.output).contains("Uploaded file for notarization. Submission ID:")
