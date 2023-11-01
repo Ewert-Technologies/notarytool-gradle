@@ -15,6 +15,9 @@ class SubmitSoftwareTaskTests {
   private val buildFile by lazy { projectDir.resolve("build.gradle.kts") }
   private val settingsFile by lazy { projectDir.resolve("settings.gradle") }
 
+  /**
+   * Test with no file specified.
+   */
   @Test
   fun test1() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
@@ -30,6 +33,9 @@ class SubmitSoftwareTaskTests {
     assertThat(result.output).contains("is not a file.")
   }
 
+  /**
+   * Test passing a file name argument, file doesn't exist.
+   */
   @Test
   fun test2() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
@@ -45,6 +51,9 @@ class SubmitSoftwareTaskTests {
     assertThat(result.output).contains("abc does not exist.")
   }
 
+  /**
+   * Test passing a file name argument, file exists, but is invalid for notarization.
+   */
   @Test
   fun test3() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
@@ -61,6 +70,9 @@ class SubmitSoftwareTaskTests {
     assertThat(result.output).contains("Invalid")
   }
 
+  /**
+   * Test using file name in gradle file, file does not exist
+   */
   @Test
   fun test4() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
@@ -76,6 +88,9 @@ class SubmitSoftwareTaskTests {
     assertThat(result.output).contains("pwm_missing_aarch64.dmg does not exist.")
   }
 
+  /**
+   * Test using file name in gradle file, file exists, and can be notarized succesfully
+   */
   @Test
   fun test5() {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
