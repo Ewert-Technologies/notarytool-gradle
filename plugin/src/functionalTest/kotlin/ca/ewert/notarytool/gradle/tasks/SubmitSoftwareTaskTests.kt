@@ -58,5 +58,36 @@ class SubmitSoftwareTaskTests {
     runner.withProjectDir(projectDir)
     val result = runner.build()
     assertThat(result.output).contains("Uploaded file for notarization. Submission ID:")
+    assertThat(result.output).contains("Invalid")
+  }
+
+  @Test
+  fun test4() {
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
+    val buildFileContents: String = readBuildFileContents("/private/build3.gradle.ktstest")
+    buildFile.writeText(buildFileContents)
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("submitSoftware")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+    assertThat(result.output).contains("pwm_missing_aarch64.dmg does not exist.")
+  }
+
+  @Test
+  fun test5() {
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
+    val buildFileContents: String = readBuildFileContents("/private/build4.gradle.ktstest")
+    buildFile.writeText(buildFileContents)
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("submitSoftware")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+    assertThat(result.output).contains("Accepted")
   }
 }
