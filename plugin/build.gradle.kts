@@ -69,9 +69,9 @@ gradlePlugin {
   plugins {
     create("notarytool-gradle") {
       id = project.group.toString()
-      displayName = "Notarytool Gradle"
+      displayName = "Notarytool Gradle Plugin"
       description = project.description
-      tags.set(listOf("deployment", "notarytool", "apple"))
+      tags.set(listOf("deployment", "notarytool", "apple", "macOS"))
       implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
     }
   }
