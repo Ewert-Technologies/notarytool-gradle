@@ -62,7 +62,7 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
    * Retrieves and logs the submission log (if available).
    */
   private fun retrieveSubmissionLogUrl(submissionIdWrapper: SubmissionId) {
-    this.client.getSubmissionLog(submissionIdWrapper).mapEither({ submissionLogUrlResponse: SubmissionLogUrlResponse ->
+    this.client.getSubmissionLog(submissionIdWrapper).fold({ submissionLogUrlResponse: SubmissionLogUrlResponse ->
       logger.quiet("Submission Log: ${submissionLogUrlResponse.developerLogUrlString}")
     }, { notaryToolError: NotaryToolError ->
       logger.info("Error getting log: ${notaryToolError.longMsg}")
