@@ -17,7 +17,6 @@ import org.gradle.api.tasks.options.Option
  * @author Victor Ewert
  */
 abstract class SubmissionStatusTask : NotaryToolTask() {
-
   @get:Input
   @get:Option(
     option = "submissionId",

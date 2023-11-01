@@ -33,12 +33,13 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
       logger.quiet("Submission History (last 100 submission):")
       submissionListResponse.submissionInfoList.forEach { submissionInfo: SubmissionInfo ->
         val createdDate: Instant? = submissionInfo.createdDate
-        val createdDateString: String = if (createdDate != null) {
-          createdDate.atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.LONG))
-        } else {
-          submissionInfo.createdDateText
-        }
+        val createdDateString: String =
+          if (createdDate != null) {
+            createdDate.atZone(ZoneId.systemDefault())
+              .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.LONG))
+          } else {
+            submissionInfo.createdDateText
+          }
         logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$createdDateString'")
       }
     }, { notaryToolError: NotaryToolError ->

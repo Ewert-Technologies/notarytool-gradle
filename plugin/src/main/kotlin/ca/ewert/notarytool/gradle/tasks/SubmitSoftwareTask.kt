@@ -8,7 +8,6 @@ import ca.ewert.notarytoolkotlin.response.SubmissionLogUrlResponse
 import ca.ewert.notarytoolkotlin.response.SubmissionStatusResponse
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.fold
-import com.github.michaelbull.result.mapEither
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.options.Option
@@ -25,7 +24,6 @@ import kotlin.io.path.isRegularFile
  * @author Victor Ewert
  */
 abstract class SubmitSoftwareTask : NotaryToolTask() {
-
   @get:Input
   @get:Option(
     option = "fileLocation",
@@ -81,16 +79,17 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
   private fun pollStatus(submissionId: SubmissionId) {
     logger.quiet("Polling status for submission: ${submissionId.id}...")
     val maxPollCount = 50
-    val result: Result<SubmissionStatusResponse, NotaryToolError> = this.client.pollSubmissionStatus(
-      submissionId = submissionId,
-      maxPollCount = maxPollCount,
-      delayFunction = { _: Int -> Duration.ofSeconds(15) },
-      progressCallback = { currentPollCount, submissionStatusResponse ->
-        logger.quiet(
-          "Checking submission status, attempt $currentPollCount of $maxPollCount. Current status: ${submissionStatusResponse.submissionInfo.status}",
-        )
-      },
-    )
+    val result: Result<SubmissionStatusResponse, NotaryToolError> =
+      this.client.pollSubmissionStatus(
+        submissionId = submissionId,
+        maxPollCount = maxPollCount,
+        delayFunction = { _: Int -> Duration.ofSeconds(15) },
+        progressCallback = { currentPollCount, submissionStatusResponse ->
+          logger.quiet(
+            "Checking submission status, attempt $currentPollCount of $maxPollCount. Current status: ${submissionStatusResponse.submissionInfo.status}",
+          )
+        },
+      )
 
     result.fold({ submissionStatusResponse: SubmissionStatusResponse ->
       logger.quiet("Status for submission id ${submissionId.id}: ${submissionStatusResponse.submissionInfo.status}")
@@ -100,7 +99,10 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
       }
     }, { notaryToolError: NotaryToolError ->
       when (notaryToolError) {
-        is NotaryToolError.PollingTimeout -> logger.warn("Polling timed out. Use 'submissionStatus' task to manually check the status for submission with id: ${submissionId.id}.")
+        is NotaryToolError.PollingTimeout ->
+          logger.warn(
+            "Polling timed out. Use 'submissionStatus' task to manually check the status for submission with id: ${submissionId.id}.",
+          )
         else -> logger.warn(notaryToolError.longMsg)
       }
     })

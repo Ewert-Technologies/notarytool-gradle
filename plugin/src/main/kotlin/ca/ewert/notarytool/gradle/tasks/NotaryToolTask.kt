@@ -13,7 +13,6 @@ import org.gradle.api.tasks.TaskAction
  * @author Victor Ewert
  */
 abstract class NotaryToolTask : DefaultTask() {
-
   /** Client used to make calls to the notary api */
   @Internal
   protected val client: NotaryToolClient
@@ -23,12 +22,13 @@ abstract class NotaryToolTask : DefaultTask() {
     this.group = TASK_GROUP_NAME
     val pluginExtension: NotaryToolGradlePluginExtension =
       project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)
-    client = NotaryToolClient(
-      issuerId = pluginExtension.issuerId.get(),
-      privateKeyId = pluginExtension.privateKeyId.get(),
-      privateKeyFile = pluginExtension.privateKeyFile.get(),
-      userAgent = "${project.name}/${project.version}",
-    )
+    client =
+      NotaryToolClient(
+        issuerId = pluginExtension.issuerId.get(),
+        privateKeyId = pluginExtension.privateKeyId.get(),
+        privateKeyFile = pluginExtension.privateKeyFile.get(),
+        userAgent = "${project.name}/${project.version}",
+      )
   }
 
   /**

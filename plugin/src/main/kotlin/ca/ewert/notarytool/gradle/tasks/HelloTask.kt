@@ -13,7 +13,6 @@ import org.gradle.api.tasks.options.Option
  * @author Victor Ewert
  */
 abstract class HelloTask() : DefaultTask() {
-
   @get:Input
   @Option(option = "middleName", description = "Your middle name")
   var middleName: String = "n/a"
