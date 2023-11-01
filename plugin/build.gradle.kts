@@ -37,8 +37,8 @@ dependencies {
 
   // Testing
   testImplementation(gradleTestKit())
-  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.9.3")
-  testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.26.1")
+  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.10.0")
+  testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.27.0")
 }
 
 //
