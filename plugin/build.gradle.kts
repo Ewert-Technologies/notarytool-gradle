@@ -9,6 +9,8 @@
 
 @file:Suppress("UnstableApiUsage")
 
+import java.time.Instant
+
 
 //
 // Plugins
@@ -70,6 +72,20 @@ val company: String by project
 val companyUrl: String by project
 val group: String by project
 val copyrightYear: String by project
+
+//
+// Set up jar metadata
+//
+tasks.jar {
+  manifest {
+    attributes["Project"] = project.name
+    attributes["Built-By"] = company
+    attributes["Version"] = version
+    attributes["Build-Timestamp"] = Instant.now().toString()
+    attributes["Created-By"] = "Gradle ${gradle.gradleVersion}"
+    attributes["Build-Toolchain"] = "Java ${java.toolchain.languageVersion.get()} (${java.toolchain.vendor.get()})"
+  }
+}
 
 //
 // Set up plugin metadata
