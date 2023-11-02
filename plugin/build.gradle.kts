@@ -91,13 +91,8 @@ tasks.jar {
 // Set up plugin metadata
 //
 gradlePlugin {
-
   website.set("https://www.ewert-technologies.ca")
   vcsUrl.set("https://www.ewert-technologies.ca")
-
-  //
-  // Define the plugin
-  //
   plugins {
     create(project.name) {
       id = project.group.toString()
@@ -167,4 +162,67 @@ gradlePlugin.testSourceSets.add(sourceSets["functionalTest"])
 tasks.named<Task>("check") {
   // Include functionalTest as part of the check lifecycle
   dependsOn(testing.suites.named("functionalTest"))
+}
+
+//
+// Configure maven publishing
+//
+
+tasks.register<Jar>("sourceJar") {
+  from(sourceSets.main.get().allSource)
+  archiveClassifier.set("sources")
+}
+
+tasks.register<Jar>("javadocJar") {
+  from(tasks.getByName("dokkaHtmlPublic"))
+  archiveClassifier.set("javadoc")
+}
+
+
+publishing {
+  publications {
+    create<MavenPublication>("maven") {
+      from(components["kotlin"])
+      artifact(tasks.getByName("sourceJar"))
+//      artifact(tasks.getByName("javadocJar"))
+
+      pom {
+        name.set(longName)
+        description.set(project.description)
+        url.set(projectUrl)
+        inceptionYear.set(copyrightYear)
+
+        properties.set(
+          mapOf(
+            "project.build.sourceEncoding" to "UTF-8",
+            "java.version" to "${java.toolchain.languageVersion.get()}"
+          )
+        )
+
+        organization {
+          name.set(company)
+          url.set(companyUrl)
+        }
+
+        licenses {
+          license {
+            name.set("The MIT License")
+            url.set("https://mit-license.org/")
+          }
+        }
+
+        developers {
+          developer {
+            name.set(author)
+            email.set(authorEmail)
+          }
+        }
+      }
+    }
+  }
+}
+
+// Add explicit dependency of publishMavenPublicationToMavenLocal on kotlinSourcesJar
+tasks.withType<AbstractPublishToMaven>().configureEach {
+  dependsOn("kotlinSourcesJar")
 }
