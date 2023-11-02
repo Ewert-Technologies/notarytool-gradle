@@ -79,11 +79,13 @@ gradlePlugin {
   website.set("https://www.ewert-technologies.ca")
   vcsUrl.set("https://www.ewert-technologies.ca")
 
+  //
   // Define the plugin
+  //
   plugins {
-    create("notarytool-gradle") {
+    create(project.name) {
       id = project.group.toString()
-      displayName = "Notarytool Gradle Plugin"
+      displayName = longName
       description = project.description
       tags.set(listOf("deployment", "notarytool", "apple", "macOS"))
       implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
