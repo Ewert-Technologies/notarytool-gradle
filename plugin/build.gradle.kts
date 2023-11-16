@@ -34,7 +34,7 @@ plugins {
   id("com.github.ben-manes.versions") version "0.49.0"
   id("org.jmailen.kotlinter") version "4.0.0"
   id("nu.studer.credentials") version "3.0"
-  id("com.gradle.plugin-publish") version "1.1.0"
+  id("com.gradle.plugin-publish") version "1.2.1"
 }
 
 //
