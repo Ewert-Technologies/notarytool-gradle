@@ -29,12 +29,12 @@ buildscript {
 //
 plugins {
   `java-gradle-plugin`
-  `maven-publish`
   signing
   id("org.jetbrains.kotlin.jvm") version "1.9.20"
   id("com.github.ben-manes.versions") version "0.49.0"
   id("org.jmailen.kotlinter") version "4.0.0"
   id("nu.studer.credentials") version "3.0"
+  id("com.gradle.plugin-publish") version "1.1.0"
 }
 
 //
@@ -111,23 +111,6 @@ tasks.jar {
 //
 kotlinter {
   reporters = arrayOf("html", "json")
-}
-
-//
-// Set up plugin metadata
-//
-gradlePlugin {
-  website.set("https://www.ewert-technologies.ca")
-  vcsUrl.set("https://www.ewert-technologies.ca")
-  plugins {
-    create(project.name) {
-      id = project.group.toString()
-      displayName = longName
-      description = project.description
-      tags.set(listOf("deployment", "notarytool", "apple", "macOS"))
-      implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
-    }
-  }
 }
 
 /**
@@ -232,63 +215,28 @@ tasks.register<Jar>("javadocJar") {
 }
 
 //
-// Maven Publishing
+// Set up plugin metadata
 //
-publishing {
-  publications {
-    create<MavenPublication>("NotaryToolGradle") {
-      from(components["kotlin"])
-      artifact(tasks.getByName("sourceJar"))
-      artifact(tasks.getByName("javadocJar"))
-
-      pom {
-        name.set(longName)
-        description.set(project.description)
-        url.set(projectUrl)
-        inceptionYear.set(createdYear)
-
-        properties.set(
-          mapOf(
-            "project.build.sourceEncoding" to "UTF-8",
-            "java.version" to "${java.toolchain.languageVersion.get()}"
-          )
-        )
-
-        organization {
-          name.set(company)
-          url.set(companyUrl)
-        }
-
-        licenses {
-          license {
-            name.set("The MIT License")
-            url.set("https://mit-license.org/")
-            comments.set("A permissive free software license originating at the Massachusetts Institute of Technology (MIT)")
-          }
-        }
-
-        developers {
-          developer {
-            name.set(author)
-            email.set(authorEmail)
-          }
-        }
-
-        scm {
-          connection = "scm:git:git://github.com/Ewert-Technologies/notarytool-gradle.git"
-          developerConnection = "scm:git:ssh://github.com/Ewert-Technologies/notarytool-gradle.git"
-          url = "https://github.com/Ewert-Technologies/notarytool-gradle/tree/main"
-        }
-      }
+gradlePlugin {
+  website.set(projectUrl)
+  vcsUrl.set(projectUrl)
+  plugins {
+    create(project.name) {
+      id = project.group.toString()
+      displayName = longName
+      description = project.description
+      tags = listOf("deployment", "notarytool", "apple", "macOS")
+      implementationClass = "ca.ewert.notarytool.gradle.NotarytoolGradlePlugin"
     }
   }
 }
 
-signing {
-  sign(publishing.publications["NotaryToolGradle"])
+//
+// Publishing information, used to publish to local
+//
+publishing {
+  repositories {
+    mavenLocal()
+  }
 }
 
-// Add explicit dependency of publishMavenPublicationToMavenLocal on kotlinSourcesJar
-//tasks.withType<AbstractPublishToMaven>().configureEach {
-//  dependsOn("kotlinSourcesJar")
-//}
