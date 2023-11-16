@@ -53,7 +53,7 @@ dependencies {
 
   // Testing
   testImplementation(gradleTestKit())
-  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.10.0")
+  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.10.1")
   testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.27.0")
 }
 
@@ -153,7 +153,7 @@ testing {
       dependencies {
         // functionalTest test suite depends on the production code in tests
         implementation(project())
-        implementation("com.willowtreeapps.assertk:assertk:0.26.1")
+        implementation("com.willowtreeapps.assertk:assertk:0.27.0")
       }
 
       targets {
