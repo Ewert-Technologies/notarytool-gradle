@@ -30,6 +30,7 @@ buildscript {
 plugins {
   `java-gradle-plugin`
   `maven-publish`
+  signing
   id("org.jetbrains.kotlin.jvm") version "1.9.20"
   id("com.github.ben-manes.versions") version "0.49.0"
   id("org.jmailen.kotlinter") version "4.0.0"
@@ -230,10 +231,12 @@ tasks.register<Jar>("javadocJar") {
   archiveClassifier.set("javadoc")
 }
 
-
+//
+// Maven Publishing
+//
 publishing {
   publications {
-    create<MavenPublication>("maven") {
+    create<MavenPublication>("NotaryToolGradle") {
       from(components["kotlin"])
       artifact(tasks.getByName("sourceJar"))
       artifact(tasks.getByName("javadocJar"))
@@ -281,7 +284,11 @@ publishing {
   }
 }
 
-// Add explicit dependency of publishMavenPublicationToMavenLocal on kotlinSourcesJar
-tasks.withType<AbstractPublishToMaven>().configureEach {
-  dependsOn("kotlinSourcesJar")
+signing {
+  sign(publishing.publications["NotaryToolGradle"])
 }
+
+// Add explicit dependency of publishMavenPublicationToMavenLocal on kotlinSourcesJar
+//tasks.withType<AbstractPublishToMaven>().configureEach {
+//  dependsOn("kotlinSourcesJar")
+//}
