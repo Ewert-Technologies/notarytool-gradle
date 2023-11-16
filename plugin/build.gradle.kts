@@ -71,7 +71,10 @@ val authorEmail: String by project
 val company: String by project
 val companyUrl: String by project
 val group: String by project
+val createdYear: String by project
 val copyrightYear: String by project
+val mavenReleaseUrlString: String by project
+val mavenSnapshotUrlString: String by project
 
 //
 // Set up jar metadata
