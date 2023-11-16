@@ -134,6 +134,7 @@ replay_pid*
 
 # Private tests and resources, not be added to git
 private
+*.gpg
 
 # macOS
 .DS_store
