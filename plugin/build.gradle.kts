@@ -106,6 +106,13 @@ tasks.jar {
 }
 
 //
+// Configure ktlint
+//
+kotlinter {
+  reporters = arrayOf("html", "json")
+}
+
+//
 // Set up plugin metadata
 //
 gradlePlugin {
