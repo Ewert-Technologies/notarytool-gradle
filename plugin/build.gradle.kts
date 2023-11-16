@@ -139,10 +139,10 @@ tasks.register("buildInfo") {
   logger.quiet("Project: ${project.name} - ${project.description}")
   logger.quiet("Project version: ${project.version}")
   logger.quiet("Group:  ${project.group}")
-//  logger.quiet("Author: $author")
-//  logger.quiet("Company: $company")
+  logger.quiet("Author: $author")
+  logger.quiet("Company: $company")
   logger.quiet("Gradle Version: ${gradle.gradleVersion}")
-//  logger.quiet("Java Toolchain: Version ${java.toolchain.languageVersion.get()} (${java.toolchain.vendor.get()})")
+  logger.quiet("Java Toolchain: Version ${java.toolchain.languageVersion.get()} (${java.toolchain.vendor.get()})")
   logger.quiet("build dir: ${project.layout.buildDirectory.get()}")
 }
 
