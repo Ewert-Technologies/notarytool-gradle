@@ -86,7 +86,8 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
         delayFunction = { _: Int -> Duration.ofSeconds(15) },
         progressCallback = { currentPollCount, submissionStatusResponse ->
           logger.quiet(
-            "Checking submission status, attempt $currentPollCount of $maxPollCount. Current status: ${submissionStatusResponse.submissionInfo.status}",
+            "Checking submission status, attempt $currentPollCount of $maxPollCount. " +
+              "Current status: ${submissionStatusResponse.submissionInfo.status}",
           )
         },
       )
@@ -103,6 +104,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
           logger.warn(
             "Polling timed out. Use 'submissionStatus' task to manually check the status for submission with id: ${submissionId.id}.",
           )
+
         else -> logger.warn(notaryToolError.longMsg)
       }
     })
