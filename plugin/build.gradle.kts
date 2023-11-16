@@ -242,7 +242,7 @@ publishing {
         name.set(longName)
         description.set(project.description)
         url.set(projectUrl)
-        inceptionYear.set(copyrightYear)
+        inceptionYear.set(createdYear)
 
         properties.set(
           mapOf(
@@ -260,6 +260,7 @@ publishing {
           license {
             name.set("The MIT License")
             url.set("https://mit-license.org/")
+            comments.set("A permissive free software license originating at the Massachusetts Institute of Technology (MIT)")
           }
         }
 
@@ -268,6 +269,12 @@ publishing {
             name.set(author)
             email.set(authorEmail)
           }
+        }
+
+        scm {
+          connection = "scm:git:git://github.com/Ewert-Technologies/notarytool-gradle.git"
+          developerConnection = "scm:git:ssh://github.com/Ewert-Technologies/notarytool-gradle.git"
+          url = "https://github.com/Ewert-Technologies/notarytool-gradle/tree/main"
         }
       }
     }
