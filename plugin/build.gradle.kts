@@ -9,8 +9,10 @@
 
 @file:Suppress("UnstableApiUsage")
 
+import nu.studer.gradle.credentials.domain.CredentialsContainer
 import java.time.Instant
 
+val credentials: CredentialsContainer by project.extra
 
 //
 // Plugins
@@ -21,6 +23,7 @@ plugins {
   id("org.jetbrains.kotlin.jvm") version "1.9.20"
   id("com.github.ben-manes.versions") version "0.49.0"
   id("org.jmailen.kotlinter") version "4.0.0"
+  id("nu.studer.credentials") version "3.0"
 }
 
 //
@@ -75,6 +78,8 @@ val createdYear: String by project
 val copyrightYear: String by project
 val mavenReleaseUrlString: String by project
 val mavenSnapshotUrlString: String by project
+val ossrhUsername: String = credentials.forKey("ossrhUsername")
+val ossrhPassword: String = credentials.forKey("ossrhPassword")
 
 //
 // Set up jar metadata
