@@ -10,9 +10,19 @@
 @file:Suppress("UnstableApiUsage")
 
 import nu.studer.gradle.credentials.domain.CredentialsContainer
+import org.jetbrains.dokka.DokkaConfiguration
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+import org.jetbrains.dokka.gradle.DokkaTask
 import java.time.Instant
 
 val credentials: CredentialsContainer by project.extra
+
+buildscript {
+  dependencies {
+    classpath("org.jetbrains.dokka:dokka-base:1.9.10")
+  }
+}
 
 //
 // Plugins
@@ -173,6 +183,33 @@ tasks.named<Task>("check") {
 }
 
 //
+// Configure Dokka
+//
+
+/**
+ * Generates Dokka Documentation in html format for public items
+ */
+tasks.register<DokkaTask>("dokkaHtmlPublic") {
+  group = "documentation"
+  description = "Generates Dokka Documentation in 'html' format for public items"
+
+  pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+    footerMessage = "(c) 2023 Ewert Technologies"
+  }
+
+  dokkaSourceSets {
+    configureEach {
+      documentedVisibilities.set(
+        setOf(
+          DokkaConfiguration.Visibility.PUBLIC,
+        )
+      )
+      jdkVersion.set(11)
+    }
+  }
+}
+
+//
 // Configure maven publishing
 //
 
@@ -192,7 +229,7 @@ publishing {
     create<MavenPublication>("maven") {
       from(components["kotlin"])
       artifact(tasks.getByName("sourceJar"))
-//      artifact(tasks.getByName("javadocJar"))
+      artifact(tasks.getByName("javadocJar"))
 
       pom {
         name.set(longName)
