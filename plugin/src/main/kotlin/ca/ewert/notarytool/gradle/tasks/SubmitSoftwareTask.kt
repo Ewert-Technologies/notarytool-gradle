@@ -19,15 +19,26 @@ import kotlin.io.path.exists
 import kotlin.io.path.isRegularFile
 
 /**
+ * Name of the `fileLocation` command-line option
+ */
+private const val fileLocationName: String = "fileLocation"
+
+/**
+ * Description of the `fileLocation` command-line option
+ */
+private const val fileLocationDescription: String = "Location (path) of the file to be notarized."
+
+/**
  * Task for submitting software to be notarized.
  *
  * @author Victor Ewert
  */
 abstract class SubmitSoftwareTask : NotaryToolTask() {
+
   @get:Input
   @get:Option(
-    option = "fileLocation",
-    description = "Location (path) of the file to be notarized.",
+    option = fileLocationName,
+    description = fileLocationDescription,
   )
   abstract val fileLocation: Property<String>
 
@@ -43,22 +54,26 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
     logger.lifecycle("Starting task: ${this.name}")
     logger.info("User-Agent: ${this.client.userAgent}")
     logger.info("'fileLocation' value: ${fileLocation.get()}")
-    try {
-      val softwareFilePath: Path = Path.of(fileLocation.get())
-      logger.info("Path of file to be submitted: ${softwareFilePath.absolutePathString()}")
-      if (softwareFilePath.exists()) {
-        if (softwareFilePath.isRegularFile()) {
-          startSubmission(softwareFile = softwareFilePath)
+    if (fileLocation.get().isBlank()) {
+      logger.error("No argument was provided for command-line option '--$fileLocationName' with description: '$fileLocationDescription'")
+    } else {
+      try {
+        val softwareFilePath: Path = Path.of(fileLocation.get())
+        logger.info("Path of file to be submitted: ${softwareFilePath.absolutePathString()}")
+        if (softwareFilePath.exists()) {
+          if (softwareFilePath.isRegularFile()) {
+            startSubmission(softwareFile = softwareFilePath)
+          } else {
+            logger.error("${softwareFilePath.absolutePathString()} is not a file.")
+          }
         } else {
-          logger.error("${softwareFilePath.absolutePathString()} is not a file.")
+          logger.error("${softwareFilePath.absolutePathString()} does not exist.")
         }
-      } else {
-        logger.error("${softwareFilePath.absolutePathString()} does not exist.")
+      } catch (invalidPathException: InvalidPathException) {
+        logger.error("'fileLocation' is not valid: ${invalidPathException.localizedMessage}")
+      } catch (illegalStateException: IllegalStateException) {
+        logger.error("Invalid value for 'softwareFilepath': ${illegalStateException.localizedMessage}")
       }
-    } catch (invalidPathException: InvalidPathException) {
-      logger.error("'fileLocation' is not valid: ${invalidPathException.localizedMessage}")
-    } catch (illegalStateException: IllegalStateException) {
-      logger.error("Invalid value for 'softwareFilepath': ${illegalStateException.localizedMessage}")
     }
   }
 

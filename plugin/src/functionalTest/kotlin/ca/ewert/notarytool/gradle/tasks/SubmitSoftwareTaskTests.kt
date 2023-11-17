@@ -30,7 +30,8 @@ class SubmitSoftwareTaskTests {
     runner.withArguments("submitSoftware")
     runner.withProjectDir(projectDir)
     val result = runner.build()
-    assertThat(result.output).contains("is not a file.")
+    assertThat(result.output).contains("No argument was provided for command-line option '--fileLocation' " +
+      "with description: 'Location (path) of the file to be notarized.'")
   }
 
   /**
