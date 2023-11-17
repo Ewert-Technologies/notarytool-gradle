@@ -141,14 +141,10 @@ testing {
   suites {
     // Configure the built-in test suite
     val test by getting(JvmTestSuite::class) {
-      // Use Kotlin Test test framework
-//      useJUnitPlatform()
     }
 
     // Create a new test suite
     val functionalTest by registering(JvmTestSuite::class) {
-      // Use Kotlin Test test framework
-//      useJUnitPlatform()
 
       dependencies {
         // functionalTest test suite depends on the production code in tests
@@ -176,7 +172,6 @@ tasks.named<Task>("check") {
 //
 // Configure Dokka
 //
-
 /**
  * Generates Dokka Documentation in html format for public items
  */
@@ -201,21 +196,7 @@ tasks.register<DokkaTask>("dokkaHtmlPublic") {
 }
 
 //
-// Configure maven publishing
-//
-
-tasks.register<Jar>("sourceJar") {
-  from(sourceSets.main.get().allSource)
-  archiveClassifier.set("sources")
-}
-
-tasks.register<Jar>("javadocJar") {
-  from(tasks.getByName("dokkaHtmlPublic"))
-  archiveClassifier.set("javadoc")
-}
-
-//
-// Set up plugin metadata
+// Set up plugin metadata for Gradle Plugin Portal
 //
 gradlePlugin {
   website.set(projectUrl)
@@ -232,7 +213,7 @@ gradlePlugin {
 }
 
 //
-// Publishing information, used to publish to local
+// Configure Publishing information, used to publish to local
 //
 publishing {
   repositories {
