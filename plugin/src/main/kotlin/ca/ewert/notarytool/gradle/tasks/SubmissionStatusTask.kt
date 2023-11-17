@@ -12,7 +12,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.options.Option
 
 /**
- * A Task that retrieves the status of a notarization submission.
+ * Retrieves the status of an individual notarization submission.
  *
  * @author Victor Ewert
  */
@@ -20,7 +20,7 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   @get:Input
   @get:Option(
     option = "submissionId",
-    description = "The identifier that you received from the notary service when you post to Submit Software to start a new submission.",
+    description = "The identifier that you received after submitting the software.",
   )
   abstract val submissionId: Property<String>
 
@@ -30,14 +30,18 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   }
 
   /**
-   * Uses the submissionId argument to retrieve the submission status.
+   * Method called when Task is run. Uses the submissionId argument to retrieve the submission status.
    */
   override fun taskAction() {
+    logger.lifecycle("Starting task: ${this.name}")
+    logger.info("User-Agent: ${this.client.userAgent}")
+    logger.info("'submissionId' parameter value: ${submissionId.get()}")
+
     SubmissionId.of(submissionId.get()).fold({ submissionIdWrapper: SubmissionId ->
       logger.info("Valid submissionId: ${submissionIdWrapper.id}")
       retrieveStatus(submissionIdWrapper)
     }, { malformedSubmissionIdError: NotaryToolError.UserInputError.MalformedSubmissionIdError ->
-      logger.warn(malformedSubmissionIdError.longMsg)
+      logger.error(malformedSubmissionIdError.longMsg)
     })
   }
 
@@ -53,7 +57,7 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
           else -> logger.info("No log file")
         }
       }, { notaryToolError: NotaryToolError ->
-        logger.warn(notaryToolError.longMsg)
+        logger.error(notaryToolError.longMsg)
       })
   }
 
@@ -64,7 +68,7 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
     this.client.getSubmissionLog(submissionIdWrapper).fold({ submissionLogUrlResponse: SubmissionLogUrlResponse ->
       logger.quiet("Submission Log: ${submissionLogUrlResponse.developerLogUrlString}")
     }, { notaryToolError: NotaryToolError ->
-      logger.info("Error getting log: ${notaryToolError.longMsg}")
+      logger.warn("Error getting log: ${notaryToolError.longMsg}")
     })
   }
 }

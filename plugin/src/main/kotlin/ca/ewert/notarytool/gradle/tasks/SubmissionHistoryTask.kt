@@ -21,13 +21,13 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
   }
 
   /**
-   * Retrieves the list of previous submissions, and displays a summary of each
-   * submission via the logger.
+   * Method called when Task is run. Retrieves the list of previous submissions,
+   * and displays a summary of each submission via the logger.
    */
   @TaskAction
   override fun taskAction() {
     logger.lifecycle("Starting task: ${this.name}")
-    logger.lifecycle("User-Agent: ${this.client.userAgent}")
+    logger.info("User-Agent: ${this.client.userAgent}")
 
     this.client.getPreviousSubmissions().fold({ submissionListResponse: SubmissionListResponse ->
       logger.quiet("Submission History (last 100 submission):")
@@ -43,7 +43,7 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
         logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$createdDateString'")
       }
     }, { notaryToolError: NotaryToolError ->
-      logger.warn(notaryToolError.longMsg)
+      logger.error(notaryToolError.longMsg)
     })
   }
 }

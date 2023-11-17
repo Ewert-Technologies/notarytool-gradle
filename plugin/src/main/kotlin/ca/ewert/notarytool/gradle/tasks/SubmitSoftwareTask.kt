@@ -37,27 +37,28 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
   }
 
   /**
-   * Function run when the task in executed.
+   * Method called when Task is run. Submits software to be notarized.
    */
   override fun taskAction() {
     logger.lifecycle("Starting task: ${this.name}")
-    logger.debug("fileLocation: ${fileLocation.get()}")
+    logger.info("User-Agent: ${this.client.userAgent}")
+    logger.info("'fileLocation' value: ${fileLocation.get()}")
     try {
       val softwareFilePath: Path = Path.of(fileLocation.get())
-      logger.debug("softwareFilePath: ${softwareFilePath.absolutePathString()}")
+      logger.info("Path of file to be submitted: ${softwareFilePath.absolutePathString()}")
       if (softwareFilePath.exists()) {
         if (softwareFilePath.isRegularFile()) {
           startSubmission(softwareFile = softwareFilePath)
         } else {
-          logger.warn("${softwareFilePath.absolutePathString()} is not a file.")
+          logger.error("${softwareFilePath.absolutePathString()} is not a file.")
         }
       } else {
-        logger.warn("${softwareFilePath.absolutePathString()} does not exist.")
+        logger.error("${softwareFilePath.absolutePathString()} does not exist.")
       }
     } catch (invalidPathException: InvalidPathException) {
-      logger.warn("fileLocation is not valid: ${invalidPathException.localizedMessage}")
+      logger.error("'fileLocation' is not valid: ${invalidPathException.localizedMessage}")
     } catch (illegalStateException: IllegalStateException) {
-      logger.warn("Invalid value for 'softwareFilepath'")
+      logger.error("Invalid value for 'softwareFilepath': ${illegalStateException.localizedMessage}")
     }
   }
 
@@ -72,10 +73,14 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
       logger.lifecycle("Uploaded file for notarization. Submission ID: ${submissionId.id}")
       pollStatus(submissionId)
     }, { notaryToolError: NotaryToolError ->
-      logger.warn(notaryToolError.longMsg)
+      logger.error(notaryToolError.longMsg)
     })
   }
 
+  /**
+   * Polls the status, by checking the status every 15 seconds until the status is either
+   * Accepted or Invalid. Check for a maximum of 50 times.
+   */
   private fun pollStatus(submissionId: SubmissionId) {
     logger.quiet("Polling status for submission: ${submissionId.id}...")
     val maxPollCount = 50
@@ -104,8 +109,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
           logger.warn(
             "Polling timed out. Use 'submissionStatus' task to manually check the status for submission with id: ${submissionId.id}.",
           )
-
-        else -> logger.warn(notaryToolError.longMsg)
+        else -> logger.error(notaryToolError.longMsg)
       }
     })
   }
@@ -117,7 +121,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
     this.client.getSubmissionLog(submissionIdWrapper).fold({ submissionLogUrlResponse: SubmissionLogUrlResponse ->
       logger.quiet("Submission Log: ${submissionLogUrlResponse.developerLogUrlString}")
     }, { notaryToolError: NotaryToolError ->
-      logger.info("Error getting log: ${notaryToolError.longMsg}")
+      logger.warn("Error getting log: ${notaryToolError.longMsg}")
     })
   }
 }
