@@ -12,15 +12,26 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.options.Option
 
 /**
+ * Name of the `submissionId` command-line option
+ */
+private const val submissionIdName: String = "submissionId"
+
+/**
+ * Description of the `submissionId` command-line option
+ */
+private const val submissionIdDescription: String = "The identifier that you received after submitting the software."
+
+/**
  * Retrieves the status of an individual notarization submission.
  *
  * @author Victor Ewert
  */
 abstract class SubmissionStatusTask : NotaryToolTask() {
+
   @get:Input
   @get:Option(
-    option = "submissionId",
-    description = "The identifier that you received after submitting the software.",
+    option = submissionIdName,
+    description = submissionIdDescription,
   )
   abstract val submissionId: Property<String>
 
@@ -37,12 +48,16 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
     logger.info("User-Agent: ${this.client.userAgent}")
     logger.info("'submissionId' parameter value: ${submissionId.get()}")
 
-    SubmissionId.of(submissionId.get()).fold({ submissionIdWrapper: SubmissionId ->
-      logger.info("Valid submissionId: ${submissionIdWrapper.id}")
-      retrieveStatus(submissionIdWrapper)
-    }, { malformedSubmissionIdError: NotaryToolError.UserInputError.MalformedSubmissionIdError ->
-      logger.error(malformedSubmissionIdError.longMsg)
-    })
+    if (submissionId.get().isBlank()) {
+      logger.error("No argument was provided for command-line option '--$submissionIdName' with description: '$submissionIdDescription'")
+    } else {
+      SubmissionId.of(submissionId.get()).fold({ submissionIdWrapper: SubmissionId ->
+        logger.info("Valid submissionId: ${submissionIdWrapper.id}")
+        retrieveStatus(submissionIdWrapper)
+      }, { malformedSubmissionIdError: NotaryToolError.UserInputError.MalformedSubmissionIdError ->
+        logger.error(malformedSubmissionIdError.longMsg)
+      })
+    }
   }
 
   /**
