@@ -29,19 +29,31 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
     logger.lifecycle("Starting task: ${this.name}")
     logger.info("User-Agent: ${this.client.userAgent}")
 
+    val formatPattern: String = "%-40s %-15s %-35s %s"
+
     this.client.getPreviousSubmissions().fold({ submissionListResponse: SubmissionListResponse ->
-      logger.quiet("Submission History (last 100 submission):")
-      submissionListResponse.submissionInfoList.forEach { submissionInfo: SubmissionInfo ->
-        val createdDate: Instant? = submissionInfo.createdDate
-        val createdDateString: String =
-          if (createdDate != null) {
-            createdDate.atZone(ZoneId.systemDefault())
-              .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.LONG))
-          } else {
-            submissionInfo.createdDateText
-          }
-        logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$createdDateString'")
-      }
+      logger.quiet("Submission History (last 100 submission):\n")
+      logger.quiet(formatPattern.format("Submission ID", "Status", "Upload Date", "Uploaded File Name"))
+      submissionListResponse.submissionInfoList.sortedBy { it.createdDate }
+        .forEach { submissionInfo: SubmissionInfo ->
+          val uploadedDate: Instant? = submissionInfo.createdDate
+          val uploadedDateString: String =
+            if (uploadedDate != null) {
+              uploadedDate.atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.LONG))
+            } else {
+              submissionInfo.createdDateText
+            }
+//        logger.quiet("'${submissionInfo.id}'\t'${submissionInfo.name}'\t'${submissionInfo.status}'\t'$uploadedDateString'")
+          logger.quiet(
+            formatPattern.format(
+              submissionInfo.id,
+              submissionInfo.status,
+              uploadedDateString,
+              submissionInfo.name,
+            )
+          )
+        }
     }, { notaryToolError: NotaryToolError ->
       logger.error(notaryToolError.longMsg)
     })
