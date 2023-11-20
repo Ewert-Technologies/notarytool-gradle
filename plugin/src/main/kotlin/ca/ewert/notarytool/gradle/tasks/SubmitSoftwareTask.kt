@@ -82,7 +82,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
    * the returned submissionId to poll for a status Result.
    */
   private fun startSubmission(softwareFile: Path) {
-    logger.quiet("Submitting file: ${softwareFile.fileName} ...")
+    logger.quiet("Submitting file: ${softwareFile.fileName}, please wait ...")
     this.client.submitAndUploadSoftware(softwareFile).fold({ awsUploadData: AwsUploadData ->
       val submissionId: SubmissionId = awsUploadData.submissionId
       logger.lifecycle("Uploaded file for notarization. Submission ID: ${submissionId.id}")
@@ -97,7 +97,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
    * Accepted or Invalid. Check for a maximum of 50 times.
    */
   private fun pollStatus(submissionId: SubmissionId) {
-    logger.quiet("Polling status for submission: ${submissionId.id}...")
+    logger.quiet("Polling status, for submission: ${submissionId.id}...")
     val maxPollCount = 50
     val result: Result<SubmissionStatusResponse, NotaryToolError> =
       this.client.pollSubmissionStatus(
@@ -113,7 +113,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
       )
 
     result.fold({ submissionStatusResponse: SubmissionStatusResponse ->
-      logger.quiet("Status for submission id ${submissionId.id}: ${submissionStatusResponse.submissionInfo.status}")
+      logger.quiet("Final status for submission id ${submissionId.id}: ${submissionStatusResponse.submissionInfo.status}")
       when (submissionStatusResponse.submissionInfo.status) {
         Status.ACCEPTED, Status.REJECTED, Status.INVALID -> retrieveSubmissionLogUrl(submissionId)
         else -> logger.info("No log file")
@@ -122,7 +122,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
       when (notaryToolError) {
         is NotaryToolError.PollingTimeout ->
           logger.warn(
-            "Polling timed out. Use 'submissionStatus' task to manually check the status for submission with id: ${submissionId.id}.",
+            "Polling timed out. Use 'submissionStatus' task to manually check the status for t submission with id: ${submissionId.id}.",
           )
         else -> logger.error(notaryToolError.longMsg)
       }
