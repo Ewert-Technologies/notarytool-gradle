@@ -18,8 +18,7 @@ new command line tool called `notarytool`
 and as of November 1, 2023 Apples notary service no longer accepts uploads using `altool`. The `notarytool` utility
 requires Xcode 13 and macOS 11.3 or later. This makes notarizing software applications on older versions of macOS a
 challenge. In addition, the `notarytool` utility is only available on macOS, so it can't be used on other Operating
-Systems. To help with this, Apple supplies the [Notary API Web Service](https://developer.apple.
-com/documentation/notaryapi),
+Systems. To help with this, Apple supplies the [Notary API Web Service](https://developer.apple.com/documentation/notaryapi),
 which allows cross-platform notarization using a REST API.
 
 This plugin uses the Notary API to notarize software applications and so it can be used with older versions of macOS,
