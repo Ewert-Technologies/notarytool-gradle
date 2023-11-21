@@ -51,7 +51,7 @@ abstract class SubmissionHistoryTask : NotaryToolTask() {
               submissionInfo.status,
               uploadedDateString,
               submissionInfo.name,
-            )
+            ),
           )
         }
     }, { notaryToolError: NotaryToolError ->

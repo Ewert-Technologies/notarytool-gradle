@@ -32,8 +32,10 @@ class SubmissionStatusTaskTests {
     runner.withArguments("submissionStatus")
     runner.withProjectDir(projectDir)
     val result = runner.build()
-    assertThat(result.output).contains("No argument was provided for command-line option '--submissionId' " +
-      "with description: 'The identifier that you received after submitting the software.'")
+    assertThat(result.output).contains(
+      "No argument was provided for command-line option '--submissionId' " +
+        "with description: 'The identifier that you received after submitting the software.'",
+    )
   }
 
   @Test

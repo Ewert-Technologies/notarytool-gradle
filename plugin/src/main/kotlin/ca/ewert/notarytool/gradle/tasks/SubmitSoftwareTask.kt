@@ -34,7 +34,6 @@ private const val fileLocationDescription: String = "Location (path) of the file
  * @author Victor Ewert
  */
 abstract class SubmitSoftwareTask : NotaryToolTask() {
-
   @get:Input
   @get:Option(
     option = fileLocationName,

@@ -27,7 +27,6 @@ private const val submissionIdDescription: String = "The identifier that you rec
  * @author Victor Ewert
  */
 abstract class SubmissionStatusTask : NotaryToolTask() {
-
   @get:Input
   @get:Option(
     option = submissionIdName,

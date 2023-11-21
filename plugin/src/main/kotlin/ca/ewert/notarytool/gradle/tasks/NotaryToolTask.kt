@@ -33,8 +33,10 @@ abstract class NotaryToolTask : DefaultTask() {
           userAgent = "${project.name}/${project.version}",
         )
     } catch (mse: MissingValueException) {
-      logger.error("notarytool plugin is missing Notary Credentials are missing\n" +
-        "Please make sure the issuerId, privateKeyId and privateKey file values have been set in the configuration block.")
+      logger.error(
+        "notarytool plugin is missing Notary Credentials are missing\n" +
+          "Please make sure the issuerId, privateKeyId and privateKey file values have been set in the configuration block.",
+      )
       throw mse
     }
   }
