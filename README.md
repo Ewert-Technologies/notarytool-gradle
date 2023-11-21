@@ -61,7 +61,8 @@ calls to the Notary API
 for more information). Note: the JWT is generated for you automatically by this library.
 
 ### Configuration
-In order to use the plugin, it must be configured with the Authentication information obtained as above.
+In order to use the plugin, it must be configured with the Authentication information obtained as above. To
+configure the Authentication information, add the following configuration block to your script: 
 
 ```kotlin
 configure<NotaryToolGradlePluginExtension> {
@@ -72,7 +73,18 @@ configure<NotaryToolGradlePluginExtension> {
 }
 ```
 NOTE: The privateKeyId and issuerId should not be stored directly in the build script as this could potentially
-expose private information.
+expose private information. Use something like the
+[gradle-credentials-plugin](https://github.com/etiennestuder/gradle-credentials-plugin) to secure this
+information.
+
+If the configuration block has not been added the following error is displayed when applying the plugin:
+
+```
+Could not create task ':submissionHistory'.
+Could not create task of type 'SubmissionHistoryTask'.
+Cannot query the value of extension 'notarytool-gradle-extension' property 'issuerId' because it has no value available.
+```
+
 
 ### Tasks
 The plugin adds the following tasks to the build, grouped under `notarytool`:
@@ -225,11 +237,11 @@ tasks.submitSoftware {
 Note that the fileLocation parameter is a `String`. It would typically be set based on a value from a task that
 produces the uploadfile (typically a `.dmg` or `.zip` file), for example `jpackage`.
 
-As mentioned, after submitting the software to Apples to be notarized, it continues to check on the status of the
-submission. It polls for the status every 15 seconds, until the status is either `Accepted`, `Rejected` or `Invalid`. 
-This typically takes less than 5 minutes, but can take longer. After 50 attempts, if the status is still 
-`In Progress`, the task will end. You can then manually check the status using the `submissionStatus` task, 
-passing in the `submissionId`.
+As described above, after submitting the software to Apple to be notarized, it continues to check on the status of 
+the submission. It polls for the status every 15 seconds, until the status is either `Accepted`, `Rejected` 
+or `Invalid`. This typically takes less than 5 minutes, but can take longer. After 50 attempts, if the status is 
+still `In Progress`, the task will end. You can then manually check the status of the submission
+using the `submissionStatus` task, passing in the `submissionId`.
 
 ## Helpful Resources
 The following is a list of references that may be helpful when creating and releasing a software application
