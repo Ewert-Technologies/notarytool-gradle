@@ -21,12 +21,12 @@ import kotlin.io.path.isRegularFile
 /**
  * Name of the `fileLocation` command-line option
  */
-private const val fileLocationName: String = "fileLocation"
+private const val FILE_LOCATION_NAME: String = "fileLocation"
 
 /**
  * Description of the `fileLocation` command-line option
  */
-private const val fileLocationDescription: String = "Location (path) of the file to be notarized."
+private const val FILE_LOCATION_DESCRIPTION: String = "Location (path) of the file to be notarized."
 
 /**
  * Task for submitting software to be notarized.
@@ -36,8 +36,8 @@ private const val fileLocationDescription: String = "Location (path) of the file
 abstract class SubmitSoftwareTask : NotaryToolTask() {
   @get:Input
   @get:Option(
-    option = fileLocationName,
-    description = fileLocationDescription,
+    option = FILE_LOCATION_NAME,
+    description = FILE_LOCATION_DESCRIPTION,
   )
   abstract val fileLocation: Property<String>
 
@@ -55,7 +55,9 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
     logger.info("User-Agent: ${this.client.userAgent}")
     logger.info("'fileLocation' value: ${fileLocation.get()}")
     if (fileLocation.get().isBlank()) {
-      logger.error("No argument was provided for command-line option '--$fileLocationName' with description: '$fileLocationDescription'")
+      logger.error(
+        "No argument was provided for command-line option '--$FILE_LOCATION_NAME' with description: '$FILE_LOCATION_DESCRIPTION'",
+      )
     } else {
       try {
         val softwareFilePath: Path = Path.of(fileLocation.get())

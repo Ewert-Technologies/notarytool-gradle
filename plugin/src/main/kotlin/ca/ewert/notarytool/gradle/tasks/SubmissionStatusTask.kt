@@ -14,12 +14,12 @@ import org.gradle.api.tasks.options.Option
 /**
  * Name of the `submissionId` command-line option
  */
-private const val submissionIdName: String = "submissionId"
+private const val SUBMISSION_ID_NAME: String = "submissionId"
 
 /**
  * Description of the `submissionId` command-line option
  */
-private const val submissionIdDescription: String = "The identifier that you received after submitting the software."
+private const val SUBMISSION_ID_DESCRIPTION: String = "The identifier that you received after submitting the software."
 
 /**
  * Retrieves the status of an individual notarization submission.
@@ -29,8 +29,8 @@ private const val submissionIdDescription: String = "The identifier that you rec
 abstract class SubmissionStatusTask : NotaryToolTask() {
   @get:Input
   @get:Option(
-    option = submissionIdName,
-    description = submissionIdDescription,
+    option = SUBMISSION_ID_NAME,
+    description = SUBMISSION_ID_DESCRIPTION,
   )
   abstract val submissionId: Property<String>
 
@@ -49,7 +49,9 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
     logger.info("'submissionId' parameter value: ${submissionId.get()}")
 
     if (submissionId.get().isBlank()) {
-      logger.error("No argument was provided for command-line option '--$submissionIdName' with description: '$submissionIdDescription'")
+      logger.error(
+        "No argument was provided for command-line option '--$SUBMISSION_ID_NAME' with description: '$SUBMISSION_ID_DESCRIPTION'",
+      )
     } else {
       SubmissionId.of(submissionId.get()).fold({ submissionIdWrapper: SubmissionId ->
         logger.info("Valid submissionId: ${submissionIdWrapper.id}")
