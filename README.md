@@ -5,25 +5,26 @@
 
 ## Description
 A Gradle Plugin for working with Apple's Notarytool Web API. Allows software files to be notarized as part of the 
-gradle build script. Use of this plugin, doesn't depend on the operating system and so can be using on older versions
+gradle build script. Use of this plugin, doesn't depend on the operating system and so can be used on older versions
 of macOS, Windows and Linux.
 
 ## Background
-Apples requires that all software application for macOS need to be notarized, in order to give "even more confidence in 
-your macOS software", see
+Apple requires that all software application for macOS need to be notarized, in order to give "*even more confidence in 
+your macOS software*", see
 [Notarizing macOS software before distribution](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution).
-Originally applications were notarized using a command line tool called `altool`. Apple has now switched to using a
+Originally, applications were notarized using a command line tool called `altool`. Apple has now switched to using a
 new command line tool called `notarytool` 
 (see [TN3147: Migrating to the latest notarization tool](https://developer.apple.com/documentation/technotes/tn3147-migrating-to-the-latest-notarization-tool)),
 and as of November 1, 2023 Apples notary service no longer accepts uploads using `altool`. The `notarytool` utility
 requires Xcode 13 and macOS 11.3 or later. This makes notarizing software applications on older versions of macOS a
 challenge. In addition, the `notarytool` utility is only available on macOS, so it can't be used on other Operating
-Systems. To help with this Apple supplies the [Notary API Web Service](https://developer.apple.com/documentation/notaryapi)
-which allows cross-platform notarization using a REST api.
+Systems. To help with this, Apple supplies the [Notary API Web Service](https://developer.apple.
+com/documentation/notaryapi),
+which allows cross-platform notarization using a REST API.
 
-This plugin uses the Notary API to notarize software applications and so it can be used with older versions of macOS as
-well as other Operating Systems such as Windows and Linux. The plugin also allows seamless integration with an existing
-gradle build, so applications can be built and notarized in one process.
+This plugin uses the Notary API to notarize software applications and so it can be used with older versions of macOS,
+as well as other Operating Systems such as Windows and Linux. The plugin also allows seamless integration with an 
+existing gradle build, so applications can be built and notarized in one process.
 
 ## Project Status
 This project is in development, no release are publicly available yet.
@@ -63,7 +64,7 @@ for more information). Note: the JWT is generated for you automatically by this 
 
 ### Configuration
 In order to use the plugin, it must be configured with the Authentication information obtained as above. To
-configure the Authentication information, add the following configuration block to your script: 
+configure the Authentication information, add the following configuration block to your gradle build script: 
 
 ```kotlin
 configure<NotaryToolGradlePluginExtension> {
@@ -95,7 +96,7 @@ The plugin adds the following tasks to the build, grouped under `notarytool`:
 - [`submitSoftware`](#submitSoftware)
 
 #### submissionHistory
-This task Retrieves a list, from oldest to newest, of previous notarization submissions along with their status. The 
+This task retrieves a list, from oldest to newest, of previous notarization submissions along with their status. The 
 last 100 submissions are returned. For each item the submission id, status, uploaded date, and uploaded file are 
 displayed.
 
@@ -148,7 +149,7 @@ ecb300ed-1234-4ebc-abcd-84f07d054663     Accepted        Nov. 1, 2023, 2:38:35 p
 ```
 
 #### submissionStatus
-Retrieves the status of a notarization submission. If the status is `Accepted` or `Invalid` it also provides
+This task retrieves the status of a notarization submission. If the status is `Accepted` or `Invalid` it also provides
 a link to download the associated submission log. 
 
 To get help on the task use:
@@ -194,7 +195,7 @@ Submission Log: https://notary-artifacts-prod.s3.amazonaws.com/...
 ```
 
 #### submitSoftware
-Submits software to be notarized, and then repeatedly checks on the status of the submission
+This task submits software to be notarized, and then repeatedly checks on the status of the submission
 until it is either `Accepted`, `Rejected`, or `Invalid`.
 
 
@@ -236,7 +237,7 @@ tasks.submitSoftware {
 }
 ```
 Note that the fileLocation parameter is a `String`. It would typically be set based on a value from a task that
-produces the uploadfile (typically a `.dmg` or `.zip` file), for example `jpackage`.
+produces the file to be notarized (typically a `.dmg` or `.zip` file), for example the `jpackage` task.
 
 As described above, after submitting the software to Apple to be notarized, it continues to check on the status of 
 the submission. It polls for the status every 15 seconds, until the status is either `Accepted`, `Rejected` 
