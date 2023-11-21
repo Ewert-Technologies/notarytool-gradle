@@ -36,6 +36,7 @@ abstract class SubmissionStatusTask : NotaryToolTask() {
   abstract val submissionId: Property<String>
 
   init {
+    logger.lifecycle("Inside init ${this.name} task")
     this.description = "Retrieves the status of a notarization submission."
     this.submissionId.convention("")
   }

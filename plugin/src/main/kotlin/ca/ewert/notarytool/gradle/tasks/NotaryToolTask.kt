@@ -4,8 +4,10 @@ import ca.ewert.notarytool.gradle.TASK_GROUP_NAME
 import ca.ewert.notarytool.gradle.extensions.NotaryToolGradlePluginExtension
 import ca.ewert.notarytoolkotlin.NotaryToolClient
 import org.gradle.api.DefaultTask
+import org.gradle.api.internal.provider.MissingValueException
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
+import java.nio.file.Path
 
 /**
  * Parent type for Notary Tool tasks.
@@ -18,17 +20,35 @@ abstract class NotaryToolTask : DefaultTask() {
   protected val client: NotaryToolClient
 
   init {
-    logger.info("Inside init parent")
+    logger.lifecycle("Inside init parent")
     this.group = TASK_GROUP_NAME
     val pluginExtension: NotaryToolGradlePluginExtension =
       project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)
-    client =
-      NotaryToolClient(
-        issuerId = pluginExtension.issuerId.get(),
-        privateKeyId = pluginExtension.privateKeyId.get(),
-        privateKeyFile = pluginExtension.privateKeyFile.get(),
-        userAgent = "${project.name}/${project.version}",
-      )
+
+//    val msg: String = "Please make sure the issuerId, privateKeyId and privateKey file values have been set."
+//    if (!pluginExtension.issuerId.isPresent) {
+//      logger.error("The issuerId has not been set. $msg")
+//    }
+//    if (!pluginExtension.privateKeyId.isPresent) {
+//      logger.error("The privateKeyId has not been set. $msg")
+//    }
+//    if (!pluginExtension.privateKeyFile.isPresent) {
+//      logger.error("The privateKeyFile has not been set. $msg")
+//    }
+
+    try {
+      client =
+        NotaryToolClient(
+          issuerId = pluginExtension.issuerId.get(),
+          privateKeyId = pluginExtension.privateKeyId.get(),
+          privateKeyFile = pluginExtension.privateKeyFile.get(),
+          userAgent = "${project.name}/${project.version}",
+        )
+    } catch (mse: MissingValueException) {
+      logger.error("notarytool plugin is missing Notary Credentials are missing\n" +
+        "Please make sure the issuerId, privateKeyId and privateKey file values have been set in the configuration block.")
+      throw mse
+    }
   }
 
   /**
