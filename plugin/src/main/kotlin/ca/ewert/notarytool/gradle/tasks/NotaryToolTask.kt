@@ -7,7 +7,6 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.internal.provider.MissingValueException
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
-import java.nio.file.Path
 
 /**
  * Parent type for Notary Tool tasks.
@@ -24,17 +23,6 @@ abstract class NotaryToolTask : DefaultTask() {
     this.group = TASK_GROUP_NAME
     val pluginExtension: NotaryToolGradlePluginExtension =
       project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)
-
-//    val msg: String = "Please make sure the issuerId, privateKeyId and privateKey file values have been set."
-//    if (!pluginExtension.issuerId.isPresent) {
-//      logger.error("The issuerId has not been set. $msg")
-//    }
-//    if (!pluginExtension.privateKeyId.isPresent) {
-//      logger.error("The privateKeyId has not been set. $msg")
-//    }
-//    if (!pluginExtension.privateKeyFile.isPresent) {
-//      logger.error("The privateKeyFile has not been set. $msg")
-//    }
 
     try {
       client =

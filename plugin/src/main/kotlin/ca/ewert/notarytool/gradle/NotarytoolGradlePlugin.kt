@@ -30,41 +30,6 @@ class NotarytoolGradlePlugin : Plugin<Project> {
     project.logger.lifecycle("Inside notarytool plugin apply()")
     project.extensions.create("notarytool-gradle-extension", NotaryToolGradlePluginExtension::class.java)
 
-//    val s: String? = null
-//    val p: Path? = null
-//    notarytoolGradlePluginExtension.issuerId.convention(s)
-//    notarytoolGradlePluginExtension.privateKeyId.convention(s)
-//    notarytoolGradlePluginExtension.privateKeyFile.convention(p)
-
-
-
-//    project.logger.lifecycle("Setting up notarytool plugin configuration.")
-//
-//    var configured = true
-//    if (!notarytoolGradlePluginExtension.issuerId.isPresent) {
-//      project.logger.error("The issuerId has not set.")
-//      configured = false
-//    }
-//
-//    if (!notarytoolGradlePluginExtension.privateKeyId.isPresent) {
-//      project.logger.error("The privateKeyId has not set.")
-//      configured = false
-//    }
-//
-//    if (!notarytoolGradlePluginExtension.privateKeyFile.isPresent) {
-//      project.logger.error("The privateKeyFile has not set")
-//      configured = false
-//    }
-//
-//    if (configured) {
-//      project.tasks.register(SUBMISSION_HISTORY_TASK_NAME, SubmissionHistoryTask::class.java)
-//      project.tasks.register(SUBMISSION_STATUS_TASK_NAME, SubmissionStatusTask::class.java)
-//      project.tasks.register(SUBMIT_SOFTWARE_TASK_NAME, SubmitSoftwareTask::class.java)
-//    } else {
-//      val msg = "Please make sure the issuerId, privateKeyId and privateKey file values have been set.\nPlease set these value in the configuration block."
-//      project.logger.error(msg)
-//    }
-
     project.tasks.register(SUBMIT_SOFTWARE_TASK_NAME, SubmitSoftwareTask::class.java)
     project.tasks.register(SUBMISSION_STATUS_TASK_NAME, SubmissionStatusTask::class.java)
     project.tasks.register(SUBMISSION_HISTORY_TASK_NAME, SubmissionHistoryTask::class.java)
