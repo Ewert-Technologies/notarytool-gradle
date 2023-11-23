@@ -87,10 +87,6 @@ val companyUrl: String by project
 val group: String by project
 val createdYear: String by project
 val copyrightYear: String by project
-val mavenReleaseUrlString: String by project
-val mavenSnapshotUrlString: String by project
-val ossrhUsername: String = credentials.forKey("ossrhUsername")
-val ossrhPassword: String = credentials.forKey("ossrhPassword")
 
 //
 // Set up jar metadata
