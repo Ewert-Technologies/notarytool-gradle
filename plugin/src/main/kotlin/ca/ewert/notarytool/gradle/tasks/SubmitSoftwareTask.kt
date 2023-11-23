@@ -42,7 +42,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
   abstract val fileLocation: Property<String>
 
   init {
-    logger.lifecycle("Inside init ${this.name} task")
+    logger.info("Inside init ${this.name} task")
     this.description = "Submits software to be notarized."
     fileLocation.convention("")
   }

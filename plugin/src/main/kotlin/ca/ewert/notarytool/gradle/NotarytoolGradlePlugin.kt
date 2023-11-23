@@ -27,7 +27,7 @@ private const val SUBMIT_SOFTWARE_TASK_NAME = "submitSoftware"
  */
 class NotarytoolGradlePlugin : Plugin<Project> {
   override fun apply(project: Project) {
-    project.logger.lifecycle("Inside notarytool plugin apply()")
+    project.logger.info("Inside notarytool plugin apply()")
     project.extensions.create("notarytool-gradle-extension", NotaryToolGradlePluginExtension::class.java)
 
     project.tasks.register(SUBMIT_SOFTWARE_TASK_NAME, SubmitSoftwareTask::class.java)

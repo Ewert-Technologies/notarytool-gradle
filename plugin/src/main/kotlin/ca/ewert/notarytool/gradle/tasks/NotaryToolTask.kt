@@ -19,7 +19,7 @@ abstract class NotaryToolTask : DefaultTask() {
   protected val client: NotaryToolClient
 
   init {
-    logger.lifecycle("Inside init parent")
+    logger.info("Inside init parent")
     this.group = TASK_GROUP_NAME
     val pluginExtension: NotaryToolGradlePluginExtension =
       project.extensions.getByType(NotaryToolGradlePluginExtension::class.java)

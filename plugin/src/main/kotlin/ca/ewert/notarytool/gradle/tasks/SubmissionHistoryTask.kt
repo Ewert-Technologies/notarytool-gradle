@@ -17,7 +17,7 @@ import java.time.format.FormatStyle
  */
 abstract class SubmissionHistoryTask : NotaryToolTask() {
   init {
-    logger.lifecycle("Inside init ${this.name} task")
+    logger.info("Inside init ${this.name} task")
     this.description = "Retrieves a list of previous notarization submissions."
   }
 
