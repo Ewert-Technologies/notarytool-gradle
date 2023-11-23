@@ -14,15 +14,6 @@ class NotarytoolGradlePluginTest {
   fun pluginRegistersTask() {
     // Create a test project and apply the plugin
     val project = ProjectBuilder.builder().build()
-    project.plugins.apply("ca.ewert.notarytoolgradle")
-//    println("Hello Test")
-//
-//    // Verify the result
-//    val submissionHistoryTask: Task? = project.tasks.findByName("submissionHistory")
-//
-//    assertThat(submissionHistoryTask).isNotNull()
-//    assertThat(submissionHistoryTask?.name).isEqualTo("submissionHistory")
-//    assertThat(submissionHistoryTask?.group).isEqualTo("notarytool")
-//    assertThat(submissionHistoryTask?.description).isNotNull()
+    project.plugins.apply("ca.ewert-technologies.notarytoolgradle")
   }
 }
