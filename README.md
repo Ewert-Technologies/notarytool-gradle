@@ -1,5 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Static Badge](https://img.shields.io/badge/Status-In%20Development-orange)
+![Static Badge](https://img.shields.io/badge/Status-Beta-orange)
+[![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/ca.ewert-technologies.notarytoolgradle?color=blue)](https://plugins.gradle.org/plugin/ca.ewert-technologies.notarytoolgradle)
+
 
 # notarytool-gradle
 
@@ -9,8 +11,8 @@ gradle build script. Use of this plugin, doesn't depend on the operating system 
 of macOS, Windows and Linux.
 
 ## Background
-Apple requires that all software application for macOS need to be notarized, in order to give "*even more confidence in 
-your macOS software*", see
+Apple requires that all software applications for macOS need to be notarized, in order to give "*even more 
+confidence in your macOS software*", see
 [Notarizing macOS software before distribution](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution).
 Originally, applications were notarized using a command line tool called `altool`. Apple has now switched to using a
 new command line tool called `notarytool` 
@@ -21,12 +23,13 @@ challenge. In addition, the `notarytool` utility is only available on macOS, so 
 Systems. To help with this, Apple supplies the [Notary API Web Service](https://developer.apple.com/documentation/notaryapi),
 which allows cross-platform notarization using a REST API.
 
-This plugin uses the Notary API to notarize software applications and so it can be used with older versions of macOS,
-as well as other Operating Systems such as Windows and Linux. The plugin also allows seamless integration with an 
+This plugin uses the Notary API Web API to notarize software applications and so it can be used with older versions of 
+macOS, as well as other Operating Systems such as Windows and Linux. The plugin also allows seamless integration with an 
 existing gradle build, so applications can be built and notarized in one process.
 
 ## Project Status
-This project is in development, no release are publicly available yet.
+This project is in development and its usage and API may be unstable. It has been tested and can be considered as being 
+beta.
 
 ## Versioning
 This project adheres to [Semantic Versioning 2.0.0](https://semver.org/).
@@ -36,9 +39,14 @@ This project is not currently accepting any pull requests. If you find a problem
 log an [issue](https://github.com/Ewert-Technologies/notarytool-kotlin/issues).
 
 ## Installation
-The plugin in available from the Gradle Plugin Portal.
+The plugin in available from the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/ca.ewert-technologies.notarytoolgradle).
 
-TODO: add examples of how to include into build script
+To use this plugin, add the following to your build script:
+```kotlin
+plugins {
+  id("ca.ewert-technologies.notarytoolgradle") version "0.1.0"
+}
+```
 
 ## Usage
 
