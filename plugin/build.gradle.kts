@@ -20,7 +20,7 @@ val credentials: CredentialsContainer by project.extra
 
 buildscript {
   dependencies {
-    classpath("org.jetbrains.dokka:dokka-base:1.9.10")
+    classpath("org.jetbrains.dokka:dokka-base:1.9.20")
   }
 }
 
@@ -30,8 +30,8 @@ buildscript {
 plugins {
   `java-gradle-plugin`
   signing
-  id("org.jetbrains.kotlin.jvm") version "1.9.20"
-  id("com.github.ben-manes.versions") version "0.50.0"
+  id("org.jetbrains.kotlin.jvm") version "1.9.24"
+  id("com.github.ben-manes.versions") version "0.51.0"
   id("org.jmailen.kotlinter") version "4.0.0"
   id("nu.studer.credentials") version "3.0"
   id("com.gradle.plugin-publish") version "1.2.1"
@@ -53,8 +53,8 @@ dependencies {
 
   // Testing
   testImplementation(gradleTestKit())
-  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.10.1")
-  testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.27.0")
+  testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = "5.10.2")
+  testImplementation(group = "com.willowtreeapps.assertk", name = "assertk", version = "0.28.1")
 }
 
 //
@@ -153,7 +153,7 @@ testing {
       dependencies {
         // functionalTest test suite depends on the production code in tests
         implementation(project())
-        implementation("com.willowtreeapps.assertk:assertk:0.27.0")
+        implementation("com.willowtreeapps.assertk:assertk:0.28.1")
       }
 
       targets {
