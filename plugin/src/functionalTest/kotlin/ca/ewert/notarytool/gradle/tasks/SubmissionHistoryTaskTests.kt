@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.contains
 import ca.ewert.notarytool.gradle.readBuildFileContents
 import org.gradle.testkit.runner.GradleRunner
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
@@ -19,6 +20,12 @@ class SubmissionHistoryTaskTests {
 
   private val buildFile by lazy { projectDir.resolve("build.gradle.kts") }
   private val settingsFile by lazy { projectDir.resolve("settings.gradle") }
+
+  @BeforeEach
+  fun before() {
+    println("Java version: ${System.getProperty("java.version")}")
+    println("Java vendor: ${System.getProperty("java.vendor")}")
+  }
 
   @Test
   fun test1() {
