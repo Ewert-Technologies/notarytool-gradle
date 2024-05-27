@@ -7,7 +7,7 @@ import java.nio.file.Path
  *
  * @param resource location of the resource file, e.g. `/private/build1.gradle.ktstest"`
  */
-public fun readBuildFileContents(resource: String): String {
+internal fun readBuildFileContents(resource: String): String {
   return object {}.javaClass.getResource(resource)?.readText(Charsets.UTF_8) ?: ""
 }
 
