@@ -3,11 +3,13 @@ package ca.ewert.notarytool.gradle.tasks
 import assertk.assertThat
 import assertk.assertions.contains
 import ca.ewert.notarytool.gradle.readBuildFileContents
+import ca.ewert.notarytool.gradle.resourceToPath
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
+import java.nio.file.Path
 
 class SubmitSoftwareTaskTests {
   @field:TempDir
@@ -70,13 +72,16 @@ class SubmitSoftwareTaskTests {
     settingsFile.writeText("rootProject.name = \"Test-Project\"")
     val buildFileContents: String = readBuildFileContents("/private/build2.gradle.ktstest")
     buildFile.writeText(buildFileContents)
+
+    val testFile: Path? = resourceToPath("/private/pwm_invalid_aarch64.dmg")
+
     // Run the build
     val runner = GradleRunner.create()
     runner.forwardOutput()
     runner.withPluginClasspath()
     runner.withArguments(
       "submitSoftware",
-      "--fileLocation=/Users/vewert/DevProj/notarytool-gradle/plugin/src/functionalTest/resources/private/pwm_invalid_aarch64.dmg",
+      "--fileLocation=${testFile.toString()}",
     )
     runner.withProjectDir(projectDir)
     val result = runner.build()
