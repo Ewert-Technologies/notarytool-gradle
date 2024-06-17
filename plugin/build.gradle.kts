@@ -225,3 +225,11 @@ publishing {
   }
 }
 
+tasks.register("createLocalPlugin") {
+  group = "publishing"
+  dependsOn(
+    "publishPluginMavenPublicationToMavenLocalRepository",
+    "publishNotarytool-gradlePluginMarkerMavenPublicationToMavenLocalRepository"
+  )
+}
+
