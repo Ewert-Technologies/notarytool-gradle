@@ -264,18 +264,23 @@ The only option required is `fileLocation`. This can be passed in from the comma
 set within the build script, which is likely the more common way to set it.
 
 Running using `--poll` will cause the tasks to poll for the status of submission after submitting the software. This
-is the default behaviour is `--poll` is omitted.
+is the default behaviour if `--poll` is omitted.
 
-The polling can be disabled by using the `--no-poll` (i.e. `./gradlew submitSoftware --nopoll`), or by setting `poll =
+The polling can be disabled by using `--no-poll` (i.e. `./gradlew submitSoftware --nopoll`), or by setting `poll =
 false` within the
 build script.
 
-Example:
+Examples:
 
 ```kotlin
 tasks.submitSoftware {
   fileLocation = "/Path/to/uploadFile.dmg"
-  poll = true // This can be omitted unless you don't want polling 
+  poll = true // Polling is enabled, the default value is true
+}
+
+tasks.submitSoftware {
+  fileLocation = "/Path/to/uploadFile.dmg"
+  poll = false // Polling is disabled
 }
 ```
 
