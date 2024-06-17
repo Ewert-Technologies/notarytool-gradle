@@ -29,11 +29,26 @@ private const val FILE_LOCATION_NAME: String = "fileLocation"
 private const val FILE_LOCATION_DESCRIPTION: String = "Location (path) of the file to be notarized."
 
 /**
+ * Name of the `poll` command-line option
+ */
+private const val POLL_OPTION_NAME: String = "poll"
+
+/**
+ * Description of the `poll` command-line option
+ */
+private const val POLL_OPTION_DESCRIPTION: String =
+  "Repeatedly poll for submission status until Accepted, Rejected or Invalid."
+
+/**
  * Task for submitting software to be notarized.
  *
  * @author Victor Ewert
  */
 abstract class SubmitSoftwareTask : NotaryToolTask() {
+
+  /**
+   * File Location property.
+   */
   @get:Input
   @get:Option(
     option = FILE_LOCATION_NAME,
@@ -41,10 +56,21 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
   )
   abstract val fileLocation: Property<String>
 
+  @get:Input
+  @get:Option(
+    option = POLL_OPTION_NAME,
+    description = POLL_OPTION_DESCRIPTION,
+  )
+  abstract val poll: Property<Boolean>
+
+  /**
+   * Polling flag.
+   */
   init {
     logger.info("Inside init ${this.name} task")
     this.description = "Submits software to be notarized."
     fileLocation.convention("")
+    poll.convention(true)
   }
 
   /**
@@ -54,6 +80,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
     logger.lifecycle("Starting task: ${this.name}")
     logger.info("User-Agent: ${this.client.userAgent}")
     logger.info("'fileLocation' value: ${fileLocation.get()}")
+    logger.info(("'poll' value: ${poll.get()}"))
     if (fileLocation.get().isBlank()) {
       logger.error(
         "No argument was provided for command-line option '--$FILE_LOCATION_NAME' with description: '$FILE_LOCATION_DESCRIPTION'",
@@ -88,7 +115,11 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
     this.client.submitAndUploadSoftware(softwareFile).fold({ awsUploadData: AwsUploadData ->
       val submissionId: SubmissionId = awsUploadData.submissionId
       logger.lifecycle("Uploaded file for notarization. Submission ID: ${submissionId.id}")
-      pollStatus(submissionId)
+      if (poll.get()) {
+        pollForStatus(submissionId)
+      } else {
+        logger.lifecycle("Check the submission status using: './gradlew submissionStatus --submissionId ${submissionId.id}'")
+      }
     }, { notaryToolError: NotaryToolError ->
       logger.error(notaryToolError.longMsg)
     })
@@ -98,7 +129,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
    * Polls the status, by checking the status every 15 seconds until the status is either
    * Accepted or Invalid. Check for a maximum of 50 times.
    */
-  private fun pollStatus(submissionId: SubmissionId) {
+  private fun pollForStatus(submissionId: SubmissionId) {
     logger.quiet("Polling status, for submission: ${submissionId.id}...")
     val maxPollCount = 50
     val result: Result<SubmissionStatusResponse, NotaryToolError> =
@@ -126,6 +157,7 @@ abstract class SubmitSoftwareTask : NotaryToolTask() {
           logger.warn(
             "Polling timed out. Use 'submissionStatus' task to manually check the status for t submission with id: ${submissionId.id}.",
           )
+
         else -> logger.error(notaryToolError.longMsg)
       }
     })

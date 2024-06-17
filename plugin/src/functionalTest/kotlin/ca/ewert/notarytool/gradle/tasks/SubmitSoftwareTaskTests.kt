@@ -81,7 +81,7 @@ class SubmitSoftwareTaskTests {
     runner.withPluginClasspath()
     runner.withArguments(
       "submitSoftware",
-      "--fileLocation=${testFile.toString()}",
+      "--fileLocation=$testFile",
     )
     runner.withProjectDir(projectDir)
     val result = runner.build()
@@ -123,5 +123,43 @@ class SubmitSoftwareTaskTests {
     runner.withProjectDir(projectDir)
     val result = runner.build()
     assertThat(result.output).contains("Accepted")
+  }
+
+  /**
+   * Test using the file name in gradle file, the file exists and can be notarized successfully.
+   * No polling, `--no-poll` passed in as command argument
+   */
+  @Test
+  fun test6() {
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
+    val buildFileContents: String = readBuildFileContents("/private/build4.gradle.ktstest")
+    buildFile.writeText(buildFileContents)
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("submitSoftware", "--no-poll")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+    assertThat(result.output).contains("Check the submission status using:")
+  }
+
+  /**
+   * Test using the file name in gradle file, the file exists and can be notarized successfully.
+   * No polling, `poll` set to `false` in build script.
+   */
+  @Test
+  fun test7() {
+    settingsFile.writeText("rootProject.name = \"Test-Project\"")
+    val buildFileContents: String = readBuildFileContents("/private/build5.gradle.ktstest")
+    buildFile.writeText(buildFileContents)
+    // Run the build
+    val runner = GradleRunner.create()
+    runner.forwardOutput()
+    runner.withPluginClasspath()
+    runner.withArguments("submitSoftware")
+    runner.withProjectDir(projectDir)
+    val result = runner.build()
+    assertThat(result.output).contains("Check the submission status using:")
   }
 }
