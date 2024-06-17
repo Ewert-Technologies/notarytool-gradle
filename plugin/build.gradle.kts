@@ -49,7 +49,7 @@ repositories {
 // Plugin Dependencies
 //
 dependencies {
-  implementation(group = "ca.ewert-technologies.notarytoolkotlin", name = "notarytool-kotlin", "0.2.0")
+  implementation(group = "ca.ewert-technologies.notarytoolkotlin", name = "notarytool-kotlin", "0.2.1")
 
   // Testing
   testImplementation(gradleTestKit())
