@@ -45,7 +45,6 @@ private const val POLL_OPTION_DESCRIPTION: String =
  * @author Victor Ewert
  */
 abstract class SubmitSoftwareTask : NotaryToolTask() {
-
   /**
    * File Location property.
    */
