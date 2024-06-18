@@ -260,15 +260,14 @@ Group
 
 ```
 
-The only option required is `fileLocation`. This can be passed in from the command line, but can also be
+The only required option is `fileLocation`. This can be passed in from the command line, but can also be
 set within the build script, which is likely the more common way to set it.
 
 Running using `--poll` will cause the tasks to poll for the status of submission after submitting the software. This
-is the default behaviour if `--poll` is omitted.
+is the default behaviour (i.e. polling is enabled if `--poll` is omitted).
 
-The polling can be disabled by using `--no-poll` (i.e. `./gradlew submitSoftware --nopoll`), or by setting `poll =
-false` within the
-build script.
+The polling can be disabled by using `--no-poll` (i.e. `./gradlew submitSoftware --no-poll`),
+or by setting `poll = false` within the build script.
 
 Examples:
 
